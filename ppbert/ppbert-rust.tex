@@ -1,0 +1,238 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+ \usepackage{epstopdf}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Huge{#1}
+  \end{center}
+}
+
+\def\BigSmiley{.25}
+\def\SmallSmiley{.15}
+\newcommand\smiley[1]{\begin{center}\includegraphics[scale=\SmallSmiley]{#1.eps}\end{center}}
+\newcommand\good{\smiley{good}}
+\newcommand\bad{\smiley{bad}}
+\newcommand\ugly{\smiley{ugly}}
+
+\def\MinipageWidth{.32\textwidth}
+\newcommand\SmileyBlock[2]{
+  \begin{minipage}[t]{\MinipageWidth}
+    \begin{center}
+      \includegraphics[scale=\SmallSmiley]{#1.eps}
+    \end{center}
+    \scriptsize
+    #2
+  \end{minipage}
+}
+
+\begin{document}
+
+\begin{frame}
+  \big{Rust}
+  \vskip 1cm
+  \centering
+  \begin{minipage}{.3\textwidth}
+    \centering\includegraphics[scale=\BigSmiley]{good.eps}
+  \end{minipage}
+  \begin{minipage}{.3\textwidth}
+    \centering\includegraphics[scale=\BigSmiley]{bad.eps}
+  \end{minipage}
+  \begin{minipage}{.3\textwidth}
+    \centering\includegraphics[scale=\BigSmiley]{ugly.eps}
+  \end{minipage}
+  \vskip 1cm
+  \big{Experience from ppbert}
+\end{frame}
+
+
+
+
+\begin{frame}[fragile]
+  \big{ppbert}
+  \begin{itemize}
+    \item Command line utility
+    \item Pretty print data encoded in Erlang External Term Format
+    \item
+    \begin{lstlisting}
+> ppbert mini_dict.bert
+[
+  {hostname, "localhost"},
+  {port, 6502},
+  {header, <<"Keep-alive: yes">>}
+]
+\end{lstlisting}
+\item Faster than \texttt{io:format("\char126 p\char126 n", [Term])}
+\vskip .25cm
+\scriptsize
+\centering
+\begin{tabular}{l|rrr}
+  File (size) & ppbert & io:format & ratio \\
+  \hline
+  creatives.bert (96M)\footnote{Swapping on machine with 4G of memory}
+  & 4.0s & 3m23.0s & 50.8 \\
+  sites.bert (25M) & 1.0s & 17.7s & 17.7 \\
+  flights.bert (11M) & 0.8s & 13.8s & 17.3 \\
+  geo\_criterias.bert (5.5M) & 0.4s & 6.3s & 15.8 \\
+  sitelists.bert (4.9M) & 0.4s & 4.0s & 10.0
+\end{tabular}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[t,fragile]
+  \big{Rust}\pause
+
+  \SmileyBlock{good}{
+    \begin{itemize}
+      \item Speed
+      \item No memory leaks
+      \item High-level constructs
+      \item Low-level control
+      \item Statically-linked binary
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{bad}{
+    \begin{itemize}
+      \item Slow compile times
+      \item \texttt{\#[bench]} not stable
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{ugly}{
+    \begin{itemize}
+      \item Workarounds for globals
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[t,fragile]
+  \big{Cargo}\pause
+
+  \SmileyBlock{good}{
+    \begin{itemize}
+      \item Dep. installation
+      \item Compile, test, run
+      \item Publish to crates.io
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{bad}{
+    \begin{itemize}
+      \item Pretty much forced to use it
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{ugly}{
+    \begin{itemize}
+      \item No line wraps in Emacs
+      \item Raw escape codes in Emacs (\texttt{\^{}O})
+    \end{itemize}
+  }
+\end{frame}
+
+
+\begin{frame}[t,fragile]
+  \big{Libraries}\pause
+
+  \SmileyBlock{good}{
+    \begin{itemize}
+      \item Good selection
+      \item Good documentation
+      \item \texttt{num}, \texttt{clap}
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{bad}{
+    \begin{itemize}
+      \item \texttt{nom} (complicated macros, incomplete
+      documentation, difficult error handling)
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{ugly}{
+    \begin{itemize}
+      \item Dep. tree quickly becomes large
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}[t,fragile]
+  \big{Tools}\pause
+
+  \SmileyBlock{good}{
+    \begin{itemize}
+      \item racer (auto-complete)
+      \item rustup (update rustc)
+      \item \texttt{perf} + flamegraph
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{bad}{
+    \begin{itemize}
+      \item Debugger support
+      \item Profiler
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{ugly}{
+    \begin{itemize}
+      \item Output in \texttt{perf} (name mangling, unknown samples)
+    \end{itemize}
+  }
+\end{frame}
+
+
+\begin{frame}[t,fragile]
+  \big{Community}\pause
+
+  \SmileyBlock{good}{
+    \begin{itemize}
+      \item Programming Rust (O'Reilly)
+      \item Rust book
+      \item Standard lib doc
+      \item \#rust (slack and irc)
+      \item Friendly, open
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{bad}{
+    \begin{itemize}
+      \item Some answers are out of date (SO)
+    \end{itemize}
+  }\pause
+  %
+  \SmileyBlock{ugly}{
+    \begin{itemize}
+      \item Comments on /r/programming
+      \item ``Rewrite it in Rust!''
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering\includegraphics{good.eps}
+\end{frame}
+
+\end{document}
