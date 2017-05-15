@@ -1,0 +1,169 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{charter}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+ \usepackage{epstopdf}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{awk}
+\end{frame}
+
+\begin{frame}
+  \big{demo.txt}
+  \lstinputlisting{demo.txt}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principle \#1}
+  \big{Patterns and actions}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Patterns and actions}
+
+  \begin{itemize}
+    \item A awk program is a list of patterns and actions to execute;
+    \item Patterns are tried in order for every line of input;
+    \item More than one pattern can match.
+  \end{itemize}
+
+  \begin{lstlisting}
+    pattern_1 { actions_1 }
+    pattern_2 { actions_2 }
+    ...
+    pattern_k { actions_k }
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Execution model}
+
+  \begin{lstlisting}
+    for each $line {
+      for each $pattern, $action {
+        if $line matches $pattern {
+          execute $action
+        }
+      }
+    }
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Examples}
+  \begin{lstlisting}
+    /erlang/                     { erl_projects++ }
+    length($3) < 5               { print $1, $3 }
+    $2 == "backend" && $3 == "c" { print $0 }
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Demo}
+  \begin{lstlisting}
+    > awk '/erlang/ { erl_projects++ }' demo.txt
+    #\pause#
+
+    > awk 'length($3) < 5 { print $1, $3 }' demo.txt
+    rtb-trader ruby
+    iplist-service c
+    #\pause#
+
+    > awk '$2=="backend" && $3=="c" { print $0 }' demo.txt
+    iplist-service  backend     c
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Two special patterns}
+
+  \begin{lstlisting}
+    BEGIN { /* run before any line is processed */ }
+    END   { /* run after all lines are processed */ }
+  \end{lstlisting}
+
+  \begin{center}Useful for initialization and reporting.\end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Example}
+  \begin{lstlisting}
+    > awk '/erlang/ { p++ } END { print p }' demo.txt
+    2
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principle \#2}
+  \big{Abbreviate common use cases}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{No pattern}
+
+  If no pattern is specified, all lines match.
+
+  \begin{lstlisting}
+    > awk '{print $1}' demo.txt
+    rtb-gateway
+    rtb-trader
+    iplist-service
+    identifyd
+    rtb-delivery
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{No action}
+
+  If no action is specified, the whole line is printed.
+
+  \begin{lstlisting}
+    > awk '/data|backend/' demo.txt
+    rtb-gateway     backend     erlang
+    iplist-service  backend     c
+    identifyd       data        scala
+    rtb-delivery    backend     erlang
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Print without arguments}
+
+  \texttt{print} without arguments prints the whole line.
+
+  \begin{lstlisting}
+    > awk '$2 == "data" || $3 == "c" { print }' demo.txt
+    iplist-service  backend     c
+    identifyd       data        scala
+  \end{lstlisting}
+\end{frame}
+
+\end{document}

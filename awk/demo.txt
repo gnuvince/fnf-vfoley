@@ -1,0 +1,5 @@
+rtb-gateway     backend     erlang
+rtb-trader      application ruby
+iplist-service  backend     c
+identifyd       data        scala
+rtb-delivery    backend     erlang
