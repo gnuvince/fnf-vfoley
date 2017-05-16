@@ -89,6 +89,7 @@
   \big{Demo}
   \begin{lstlisting}
     > awk '/erlang/ { erl_projects++ }' demo.txt
+    [no output]
     #\pause#
 
     > awk 'length($3) < 5 { print $1, $3 }' demo.txt
@@ -164,6 +165,148 @@
     iplist-service  backend     c
     identifyd       data        scala
   \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principle \#3}
+  \big{Allow custom formatting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Record separator}
+
+  \begin{itemize}
+    \item By default, records are separated by newlines.
+    \item Can be modified through \texttt{RS} variable.
+  \end{itemize}\pause
+
+  \begin{lstlisting}
+    > echo "a b::c d" | awk -v RS=:: '{print $1}'
+    a
+    c
+    #\pause#
+    > echo "a b::c d" | awk 'BEGIN { RS="::" } {print $2}'
+    b
+    d
+  \end{lstlisting}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \big{Field separator}
+
+  \begin{itemize}
+    \item By default, fields are separated by whitespace.
+    \item Can be modified through \texttt{FS} variable.
+  \end{itemize}\pause
+
+  \begin{lstlisting}
+    > echo -e "a,b\nc,d" | awk -F, '{print $1}'
+    a
+    c
+    #\pause#
+    > echo -e "a,b\nc,d" | awk -v FS=, '{print $1}'
+    a
+    c
+    #\pause#
+    > echo -e "a--b\nc-d" | awk 'BEGIN {FS="-+"} {print $2}'
+    b
+    d
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Output separators}
+
+  \begin{lstlisting}
+    > echo -e "a b\nc d" | \
+      awk -v OFS='|' -v ORS=']' '{print $1, $2}'
+    a|b]c|d]
+    #\pause#
+    > echo -e "a b\nc d" | \
+      awk -v OFS='|' -v ORS=']' '{print $0}'
+    a b]c d]
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principle \#4}
+  \big{Don't be too different}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Awk statements have a C-like syntax}
+
+  \begin{lstlisting}
+    if (expr) stmt [else stmt]
+    while (expr) stmt
+    for (expr; expr; expr) stmt
+  * for (var in array) stmt
+    do stmt while (expr)
+    break
+    continue
+    { [stmt ...] }
+    expr
+  * print [expr-list] [>expr]
+    printf format [..., expr-list] [>expr]
+    return [expr]
+  * next (skip all remaining patterns, goto next line)
+  * nextfile (skip to next file)
+  * delete array[expr]
+  * delete array
+    exit [expr]
+  \end{lstlisting}
+  \scriptsize{Source: OpenBSD awk(1) man page}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{JavaScript has Awk-like function syntax}
+
+  \begin{lstlisting}
+    function foo(a, b, c) {
+      ...;
+      return a;
+    }
+  \end{lstlisting}
+
+  \scriptsize{(You declare functions at the top-level, i.e., with patterns.)}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Awk has common functions}
+  \begin{lstlisting}
+     atan2(y, x)         gsub(r, t, s)
+     cos(x)              index(s, t)
+     exp(x)              length(s)
+     int(x)              match(s, r)
+     log(x)              split(s, a, fs)
+     rand()              sprintf(fmt, expr, ...)
+     sin(x)              sub(r, t, s)
+     sqrt(x)             substr(s, m, n)
+     srand(expr)         tolower(str)
+                         toupper(str)
+  \end{lstlisting}
+
+  \scriptsize{Source: OpenBSD awk(1) man page}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principle \#5}
+  \big{Slow and steady wins the race}
+\end{frame}
+
+\begin{frame}
+  \big{A tool that grows with you}
+
+  \begin{itemize}
+    \item awk can slowly be incorporated in your day-to-day;
+    \item as you use it, you'll discover more places where it's useful;
+    \item over time, it reduces the number of times you have to use Python to do a one-off task.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{/awk}
 \end{frame}
 
 \end{document}
