@@ -1,0 +1,136 @@
+\documentclass{article}
+
+\usepackage{noweb}
+\usepackage{xcolor}
+\usepackage{colortbl}
+\usepackage[colorlinks,linkcolor=blue]{hyperref}
+\usepackage[letterpaper]{geometry}
+\usepackage{parskip}
+
+\title{Rotating a Collection}
+\date{}
+
+\definecolor{Gray}{gray}{0.85}
+\newcolumntype{a}{>{\columncolor{Gray}}c}
+
+
+\begin{document}
+
+\maketitle
+
+\section{Problem}
+
+A clever way to rotate the elements of a collection (in place) by a given offset
+is described in chapter~2 of \textsl{Programming Pearls}, by Jon Bentley.
+Instead of performing complex book-keeping operations to move one element at a time,
+the rotation is reduced to making three reversals of the elements,
+as shown in \autoref{fig:rotation-example}.
+
+\begin{figure}[htbp]
+    \centering
+
+    \begin{tabular}{|*{3}{c|}*{5}{c|}}
+        \hline
+        A & B & C & D & E & F & G & H \\
+        \hline
+    \end{tabular}
+
+    $\Downarrow$
+
+    \begin{tabular}{|*{3}{a|}*{5}{a|}}
+        \hline
+        H & G & F & E & D & C & B & A \\
+        \hline
+    \end{tabular}
+
+    $\Downarrow$
+
+    \begin{tabular}{|*{3}{a|}*{5}{c|}}
+        \hline
+        F & G & H & E & D & C & B & A \\
+        \hline
+    \end{tabular}
+
+    $\Downarrow$
+
+    \begin{tabular}{|*{3}{c|}*{5}{a|}}
+        \hline
+        F & G & H & A & B & C & D & E \\
+        \hline
+    \end{tabular}
+
+    \caption{Rotating an 8-element collection by 3 positions to the right}
+    \label{fig:rotation-example}
+\end{figure}
+
+\section{Main program}
+
+We'll implement rotation to the left and the right using the Rust programming language.
+Let us start by writing the main function to exercise those algorithms.
+
+<<rotate.rs>>=
+<<rotation functions>>
+fn main() {
+    for offset in 0..10 {
+        let mut u: Vec<usize> = (0..8).collect();
+        let mut v = u.clone();
+        rotate_left(&mut u, offset);
+        rotate_right(&mut v, offset);
+        println!("offset = {}: {:?} {:?}", offset, u, v);
+    }
+}
+@
+
+\section{Rotation functions}
+
+We can implement the rotation to the right (as shown in \autoref{fig:rotation-example})
+by reversing the whole slice, then reversing the two sub-slices.
+
+<<rotation functions>>=
+fn rotate_right<T>(xs: &mut [T], offset: usize) {
+    <<reverse whole slice>>
+    <<reverse sub-slices>>
+}
+@
+
+To rotate to the left, we invert the order of the operations:
+the sub-slices are reversed first, then the whole slice is reversed.
+
+<<rotation functions>>=
+fn rotate_left<T>(xs: &mut [T], offset: usize) {
+    <<reverse sub-slices>>
+    <<reverse whole slice>>
+}
+@
+
+\subsection{Rotation building blocks}
+
+Thanks to Rust's extensive standard library, the methods we need
+to implement the rotations are readily available.
+
+We can implement the reversal of the two sub-slices by making use
+of Rust's [[split_at_mut()]] and [[reverse()]] methods.
+We wrap these operations in a block to make sure that [[xs]] is no
+longer borrowed after the sub-slices have been reversed.
+
+<<reverse sub-slices>>=
+{
+    let len = xs.len();
+    let (left, right) = xs.split_at_mut(offset % len);
+    left.reverse();
+    right.reverse();
+}
+@
+
+
+We call [[reverse()]] on [[xs]] to reverse the whole array;
+it is important in Rust that [[xs]] not be borrowed at that
+moment (see the comment above [[<<reverse sub-slices>>]]).
+
+<<reverse whole slice>>=
+xs.reverse();
+@
+
+
+
+\end{document}

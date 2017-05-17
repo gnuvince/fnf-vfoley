@@ -1,0 +1,24 @@
+digraph G {
+    // Files
+    src [shape="note", label="rotate.nw"];
+    tex [shape="note", label="rotate.tex"];
+    pdf [shape="note", label="rotate.pdf"];
+    rs  [shape="note", label="rotate.rs"];
+    exe [shape="rect", label="rotate"];
+
+    // Programs
+    weave [shape="ellipse", label="noweave"];
+    tangle [shape="ellipse", label="notangle"];
+    pdflatex [shape="ellipse", label="pdflatex"];
+    rustc [shape="ellipse", label="rustc"];
+
+    src -> weave;
+    weave -> tex;
+    tex -> pdflatex;
+    pdflatex -> pdf;
+
+    src -> tangle;
+    tangle -> rs
+    rs -> rustc;
+    rustc -> exe;
+}
