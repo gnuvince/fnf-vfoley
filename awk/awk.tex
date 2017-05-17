@@ -167,6 +167,21 @@
   \end{lstlisting}
 \end{frame}
 
+\begin{frame}[fragile]
+  \big{Variables initialization}
+
+  Variables are automatically initialized when first used.
+
+  \begin{lstlisting}
+    > cat demo.txt \
+    | awk '{c[$3]++} END { for (l in c) print l, c[l] }'
+    scala 1
+    erlang 2
+    ruby 1
+    c 1
+  \end{lstlisting}
+\end{frame}
+
 \begin{frame}
   \centering\Huge{Principle \#3}
   \big{Allow custom formatting}
@@ -292,7 +307,7 @@
 
 \begin{frame}
   \centering\Huge{Principle \#5}
-  \big{Slow and steady wins the race}
+  \big{A language that grows on you}
 \end{frame}
 
 \begin{frame}
