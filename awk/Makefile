@@ -1,6 +1,6 @@
 all: awk.pdf
 
-ppbert-rust.pdf: awk.tex
+awk.pdf: awk.tex
 	pdflatex $<
 	pdflatex $<
 
