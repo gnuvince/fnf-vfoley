@@ -324,4 +324,39 @@
   \centering\Huge{/awk}
 \end{frame}
 
+\begin{frame}
+  \centering\Huge{Bonus content!}
+  \big{Simple re-implementations of Unix tools in awk}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{\texttt{cat(1)}}
+  \pause
+  \begin{lstlisting}
+    > awk '{print}' demo.txt
+    #\pause#
+    > awk 1 demo.txt
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{\texttt{grep(1)}}
+  \pause
+  \begin{lstlisting}
+    > awk '/PATTERN/' demo.txt
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{\texttt{wc(1)}}
+  \pause
+  \begin{lstlisting}
+    > awk '{nl++; nc += length($0)+1; nw += NF}
+           END { print nl, nw, nc, FILENAME; }' demo.txt
+    #\pause#
+    > awk '{nc += length($0)+1; nw += NF}
+           END { print NR, nw, nc, FILENAME; }' demo.txt
+  \end{lstlisting}
+\end{frame}
+
 \end{document}
