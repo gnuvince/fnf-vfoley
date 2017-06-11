@@ -1,0 +1,46 @@
+#+options: toc:nil
+#+latex_header: \usepackage{fullpage}
+
+* ed
+- open ~demos/ed.demo~
+- use ~p~ with all addresses
+- single line : ~3p~
+- line range : ~2,7p~
+- whole file : ~%p~
+- regex forward : ~/rtb/~
+- repeat regex : ~//~
+- matching lines : ~g/erlang/p~
+- whole function : ~/^main/;/^}/p~
+
+* sam
+- go to http://cs.mcgill.ca/~vfoley1/fnf.txt --- 404
+- ~sam -r vfoley1@linux.cs.mcgill.ca~
+- create new window
+- ~e public_html/fnf.txt~
+- write some text
+- ~w~
+- refresh browser
+
+* acme
+- open ~demos/acme.demo~
+- write ~w~ in the tag, middle click
+- write ~<date +'%d %B %Y'~ (use single quotes!)
+  in the tag, select it and middle click
+- write ~>wc~ in the tag, select first paragraph,
+  middle click
+- write ~|i+~ and ~|i-~ in the tag, select code sample,
+  middle click commands to indent/dedent
+
+* vi
+- show difference between ~dw/de~ and ~cw/ce~
+
+* emacs
+- open ~demos/emacs.demo~
+- ~F3~
+- ~C-s (log~
+- ~M-b C-b~
+- ~C-M-f~
+- ~C-b~
+- ~(current-time-string)~
+- ~F4~
+- ~F4~

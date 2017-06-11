@@ -1,0 +1,208 @@
+\documentclass[9pt]{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{ amssymb }
+\usepackage{ multirow }
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\newcommand\overview[3]{
+  \begin{minipage}[t]{.48\textwidth}
+    Overview
+    #2
+  \end{minipage}
+  \begin{minipage}[t]{.48\textwidth}
+    #1
+    #3
+  \end{minipage}
+}
+
+\newcommand\ck[0]{$\checkmark$}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{Features of Five Editors}
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge ed}
+  \vskip.5cm
+  \overview{Rich addressing}{
+    \begin{itemize}
+      \item Ken Thompson, c.~1971
+      \item original UNIX editor
+      \item line-oriented
+      \item used on teletypes
+      \item minimal output
+      \item \emph{rich addressing syntax}
+      \item surprising power that
+        many modern editors lack
+    \end{itemize}
+  }{
+    \begin{itemize}
+      \item \texttt{.} (\emph{dot}): current line
+      \item $n$ : line number $n$
+      \item $m,n$: line range
+      \item \texttt{\$}: last line
+      \item \texttt{\%}: equivalent to \texttt{1,\$}
+      \item \texttt{/re/}: find \texttt{re} forward
+      \item \texttt{?re?}: find \texttt{re} backward
+      \item \texttt{%
+        /\^{}main/;%
+        /\^{}$\}$/
+      }: \emph{main} function
+      \item \texttt{g/re/p}: \emph{grep}
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge sam}
+  \vskip.5cm
+  \overview{Remote editing}{
+    \begin{itemize}
+      \item Rob Pike, c.~1987
+      \item evolution of ed
+      \item visual editor
+      \item more powerful addressing
+      \item multi-file support
+      \item \emph{Remote file editing}
+    \end{itemize}
+  }{
+    \begin{itemize}
+      \item remote host: command interpreter;
+        local host: GUI
+      \item must be installed on both end-points
+      \item small chunks, not whole file
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge acme}\\
+  \centering{(or: How I Learned to Stop Worrying And Love Unix)}
+  \vskip.5cm
+
+  \overview{Unix integration}{
+    \begin{itemize}
+      \item Rob Pike, c.~1994
+      \item full-screen editor
+      \item mouse-oriented
+      \item few features
+      \item \emph{strong Unix integration}
+      \item \textsl{A Tour of Acme}: {\footnotesize \url{https://research.swtch.com/acme}}
+    \end{itemize}
+  }{
+    \begin{itemize}
+      \item \texttt{cmd}: output in new buffer
+      \item \texttt{<cmd}: output in current buffer
+      \item \texttt{>cmd}: selection as input, output in new buffer
+      \item \texttt{|cmd}: selection as input, output in current buffer
+    \end{itemize}
+  }
+\end{frame}
+
+
+\begin{frame}
+  \centering{\Huge vi}
+  \vskip.5cm
+
+  \overview{Modal editing}{
+    \begin{itemize}
+      \item Bill Joy, 1976
+      \item \textit{vi}sual interface for ex
+      \item most popular Unix editor
+      \item \emph{modal editing}
+      \item worth learning since it's so widely available
+    \end{itemize}
+  }{
+    \begin{itemize}
+      \item normal mode: edit text
+      \item insert mode: input text
+      \item more commands, \\less RSI-inducing
+      \item combinable commands: \\edit + motion (\texttt{d\$}, \texttt{c3w})
+      \item some combined commands don't behave ``like they should''
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge Emacs}
+  \vskip.5cm
+
+  \overview{Keyboard macros}{
+    \begin{itemize}
+      \item Richard Stallman, 1976 \& 1985
+      \item 2nd most popular Unix editor
+      \item $\sim10\%$ C, $\sim90\%$ Lisp
+      \item extremely customizable
+      \item \emph{keyboard macros}
+    \end{itemize}
+  }{
+    \begin{itemize}
+      \item Record keystrokes
+      \item Replay them
+      \item Useful when regexes not easy or possible
+      \item Careful with invariants!
+    \end{itemize}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge Summary}
+  \vskip.5cm
+  \small
+  \begin{tabular}{l|ccccc}
+    ~ & Rich addressing & Remote editing & Unix integration & Modal Editing & Keyboard macros \\
+    \hline
+    ed & \ck & ~ & \ck & \ck & ~ \\
+    sam & \ck & \ck & \ck & \ck & ~ \\
+    acme & \ck & ~ & \ck & ~ & ~ \\
+    vim & \ck & \ck & \ck & \ck & \ck \\
+    emacs
+    \footnote{rich addressing requires evil; modal editing requires evil, god, or xah-fly}
+      & \ck & \ck & \ck & \ck & \ck \\
+    sublime & ~ & ~ & ~ & \ck & \ck \\
+    atom & \multicolumn{5}{c}{\footnotesize Ran out of memory starting it}
+  \end{tabular}
+\end{frame}
+
+\begin{frame}
+  \centering{\Huge Other cool features}
+  \vskip.5cm
+  \begin{itemize}
+    \item Multi-file edits (sam, acme, vim, emacs)
+    \item Non-linear undo (vim, emacs)
+    \item Regexes (all)
+    \item Tag support (vim, emacs)
+  \end{itemize}
+\end{frame}
+
+
+\end{document}

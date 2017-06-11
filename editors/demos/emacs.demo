@@ -1,0 +1,14 @@
+;; Old version of log
+;;
+;; (defun log (msg)
+;;   (message "%s" msg)
+
+(defun log (msg time)
+  (message "%s: %s" time msg))
+
+(defun main (verbose)
+  (dotimes (_ 10)
+    (log "my least favorite word is 'gunk'"))
+  (log (if verbose "verbose" "quiet")))
+
+(main)

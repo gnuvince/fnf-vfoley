@@ -1,0 +1,8 @@
+Hello, welcome to FnF! Here is a code sample:
+
+map(_, []) ->
+	[];
+map(F, [X | Xs]) ->
+	[F(X) | map(F, Xs)].
+
+Today's date:

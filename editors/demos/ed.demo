@@ -1,0 +1,18 @@
+rtb-trader      application ruby
+rtb-gateway     backend     erlang
+iplist-service  backend     c
+rtb-delivery    backend     erlang
+identifyd       data        scala
+
+int
+main(void) {
+    printf("Hello, FnF!\n");
+    return 0;
+}
+
+
+void
+usage(void) {
+    fprintf(stderr, "just run it...\n");
+    exit(1);
+}
