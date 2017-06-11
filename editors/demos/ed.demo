@@ -16,3 +16,5 @@ usage(void) {
     fprintf(stderr, "just run it...\n");
     exit(1);
 }
+Hello, FnF!
+.
