@@ -1,0 +1,103 @@
+\documentclass[9pt]{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{ amssymb }
+\usepackage{ multirow }
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{Introduction to Memory Management in Rust}
+\end{frame}
+
+\begin{frame}
+  \big{Goals}
+
+  \begin{enumerate}
+    \item Explain how Rust ended up with its memory system
+    \item Give a high-level picture of how memory works in Rust
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{The (Shortened) Story of Memory Management in Rust}
+\end{frame}
+
+\begin{frame}
+  \big{Early goal for Rust: build a fast, parallel, and safe browser engine.}
+
+  \begin{itemize}
+    \item Existing browsers did not exploit the machine's parallelism (e.g., image decoding, CSS layout)
+    \item Existing browsers has security flaws that were exploitable (c.f., Pwn2Own)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{The original author, Graydon Hoare, envisioned Rust to be:}
+
+  \begin{itemize}
+    \item Fast: run on the metal, not in a VM;
+    \item Parallel: easy(ier) to write correct parallel code;
+    \item Type safe: operations on objects are always compatible with the object's type;
+    \item Memory safe: no incorrect usage of memory at run-time.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{Early Rust was quite a different language from today:}
+
+  \begin{itemize}
+    \item Written in OCaml;
+    \item ML-inspired syntax;
+    \item Iterators were a special construct;
+    \item Type-state system\footnote{Original idea for Rust, abandonned because it was too much of a chore to use in practice};
+    \item Automatic memory management via garbage collection.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{Garbage collection turned out to be an issue:}
+  \begin{itemize}
+    \item It offers memory safety, but:
+    \item Running garbage collection takes precious time;
+    \item Extra boxing + fields for GC are not cache-friendly.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{Problem}
+  \begin{itemize}
+    \item Retain memory safety (i.e., automatic memory management);
+    \item Don't pay for that safety at run-time.
+  \end{itemize}
+\end{frame}
+
+\end{document}
