@@ -5,25 +5,17 @@
 
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
-\usepackage{listings}
+\usepackage{minted}
 \usepackage{graphicx}
 \usepackage{hyperref}
 \usepackage{ amssymb }
 \usepackage{ multirow }
+\usepackage{ csquotes }
+
+\usemintedstyle{vs}
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]{}
-%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
-\lstset{
-  stepnumber=1,
-  breaklines=true,
-  basicstyle=\ttfamily\scriptsize,
-  numberstyle=\tiny,
-  commentstyle=\color{gray},
-  showstringspaces=false,
-  keepspaces=true,
-  escapeinside=\#\#
-}
 
 \renewcommand\big[1]{
   \begin{center}
@@ -55,8 +47,8 @@
   \big{Early goal for Rust: build a fast, parallel, and safe browser engine.}
 
   \begin{itemize}
-    \item Existing browsers did not exploit the machine's parallelism (e.g., image decoding, CSS layout)
-    \item Existing browsers has security flaws that were exploitable (c.f., Pwn2Own)
+    \item Browsers did not exploit the machines' parallelism (image decoding, CSS layout)
+    \item Browsers have security flaws that were exploitable (Pwn2Own)
   \end{itemize}
 \end{frame}
 
@@ -98,6 +90,63 @@
     \item Retain memory safety (i.e., automatic memory management);
     \item Don't pay for that safety at run-time.
   \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{Solution}
+  \begin{itemize}
+    \item Insert \texttt{free()} calls at compile-time;
+    \item The compiler \textbf{must} understand your code;
+    \item Some valid code \textbf{will} be rejected.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \textquote[Programming Rust, O'Reilly]{
+    Rust's radical wager---the claim on which it stakes its success, and
+    that forms the root of the language---is that even with these
+    restrictions in place, you'll find the language more than flexible
+    enough for almost every task, and that the benefits---the elimination
+    of broad classes of memory management and concurrency bugs—will
+    justify the adaptations you'll need to make to your style. The authors
+    of this book are bullish on Rust exactly because of our extensive
+    experience with C and C++. For us, Rust's deal is a no-brainer.
+  }
+\end{frame}
+
+
+\begin{frame}
+  \centering\Huge{How to Manage Memory in Rust}
+\end{frame}
+
+\begin{frame}
+  \big{1. An object has a \textit{single} owner}
+
+  \big{2. An object is released when its owner goes out of scope}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/00_dealloc.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/01_move.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/02_copy.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/03_func_move.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/04_retransfer.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/05_borrow.rs}
 \end{frame}
 
 \end{document}
