@@ -1,6 +1,6 @@
 fn retransfer(v: Vec<i32>) -> Vec<i32> {
     // `v` becomes the owner of the vector [2,3,5]
-    println!("{}", v.len());
+    println!("{:?}", v);
 
     // We transfer ownership of [2,3,5] back to the caller.
     return v;

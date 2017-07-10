@@ -1,6 +1,6 @@
 fn take(v: Vec<i32>) {
     // `v` becomes the owner of the vector [2,3,5]
-    println!("{}", v.len());
+    println!("{:?}", v);
 
     // `v` goes out of scope and the vector [2,3,5]
     // is released.

@@ -26,21 +26,18 @@
 
 \begin{document}
 
-\begin{frame}
+\begin{frame}[plain]
   \centering\Huge{Introduction to Memory Management in Rust}
 \end{frame}
 
 \begin{frame}
-  \big{Goals}
+  \big{1. Explain how Rust ended up with its memory system}
 
-  \begin{enumerate}
-    \item Explain how Rust ended up with its memory system
-    \item Give a high-level picture of how memory works in Rust
-  \end{enumerate}
+  \big{2. Give a high-level picture of how memory works in Rust}
 \end{frame}
 
 \begin{frame}
-  \centering\Huge{The (Shortened) Story of Memory Management in Rust}
+  \centering\Huge{The (Shortened and Possibly Inaccurate) Story of Memory Management in Rust}
 \end{frame}
 
 \begin{frame}
@@ -96,14 +93,14 @@
   \big{Solution}
   \begin{itemize}
     \item Insert \texttt{free()} calls at compile-time;
-    \item The compiler \textbf{must} understand your code;
-    \item Some valid code \textbf{will} be rejected.
+    \item Restrict how pointers can be used;
+    \item Reject code that would be valid if the compiler can't understand it.
   \end{itemize}
 \end{frame}
 
 \begin{frame}
-  \textquote[Programming Rust, O'Reilly]{
-    Rust's radical wager---the claim on which it stakes its success, and
+  \textquote[Programming~Rust, O'Reilly]{
+    \sl Rust's radical wager---the claim on which it stakes its success, and
     that forms the root of the language---is that even with these
     restrictions in place, you'll find the language more than flexible
     enough for almost every task, and that the benefits---the elimination
@@ -120,7 +117,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{1. An object has a \textit{single} owner}
+  \big{1. An object has a \emph{single} owner}
 
   \big{2. An object is released when its owner goes out of scope}
 \end{frame}
@@ -129,12 +126,14 @@
   \inputminted{rust}{demos/00_dealloc.rs}
 \end{frame}
 
-\begin{frame}[fragile]
-  \inputminted{rust}{demos/01_move.rs}
+\begin{frame}
+  \big{3. An assignment makes a \emph{shallow copy} and \emph{transfers ownership}}
+
+  \big{4. A variable that owns no object cannot be used}
 \end{frame}
 
 \begin{frame}[fragile]
-  \inputminted{rust}{demos/02_copy.rs}
+  \inputminted{rust}{demos/01_move.rs}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -145,8 +144,30 @@
   \inputminted{rust}{demos/04_retransfer.rs}
 \end{frame}
 
+\begin{frame}
+  \big{5. Some object types do a \emph{full copy} rather than transfer ownership}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/02_copy.rs}
+\end{frame}
+
+\begin{frame}
+  \big{6. A \emph{shared borrow} is a read-only pointer to a value}
+
+  \big{7. A borrow does not own the value it points to}
+\end{frame}
+
 \begin{frame}[fragile]
   \inputminted{rust}{demos/05_borrow.rs}
+\end{frame}
+
+\begin{frame}
+  \big{8. Many shared borrows to the same value are allowed}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/06_multiple_shared_borrows.rs}
 \end{frame}
 
 \end{document}
