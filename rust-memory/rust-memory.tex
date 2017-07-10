@@ -170,4 +170,54 @@
   \inputminted{rust}{demos/06_multiple_shared_borrows.rs}
 \end{frame}
 
+\begin{frame}
+  \big{9. A \emph{mutable borrow} is a read-write pointer to a value}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/07_mut_borrow.rs}
+\end{frame}
+
+\begin{frame}
+  \big{10. A single mutable borrow to a value may exist at any given time}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/08_single_mut_borrow.rs}
+\end{frame}
+
+\begin{frame}
+  \big{11. Shared and mutable borrows to the same value cannot coexist}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/09_mutex_borrows.rs}
+\end{frame}
+
+\begin{frame}[plain]
+  \centering\Huge{Interlude}
+
+  \big{Why can't shared and mutable borrows coexist?}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{c++}{demos/interlude.cpp}
+\end{frame}
+
+\begin{frame}
+  \centering\includegraphics[scale=0.32]{demos/boom.png}
+\end{frame}
+
+\begin{frame}
+  \big{Mixing \emph{aliasing} and \emph{mutablility} is often problematic}
+
+  \big{Rust disallows it}
+\end{frame}
+
+\begin{frame}[plain]
+  \centering\Huge{/Interlude}
+\end{frame}
+
+
+
 \end{document}
