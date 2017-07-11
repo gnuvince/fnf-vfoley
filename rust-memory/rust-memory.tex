@@ -194,7 +194,7 @@
   \inputminted{rust}{demos/09_mutex_borrows.rs}
 \end{frame}
 
-\begin{frame}[plain]
+\begin{frame}
   \centering\Huge{Interlude}
 
   \big{Why can't shared and mutable borrows coexist?}
@@ -212,12 +212,17 @@
   \big{Mixing \emph{aliasing} and \emph{mutablility} is often problematic}
 
   \big{Rust disallows it}
-\end{frame}
 
-\begin{frame}[plain]
   \centering\Huge{/Interlude}
 \end{frame}
 
+\begin{frame}
+  \big{12. A borrow must finish before the owner goes out of scope}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/10_too_long.rs}
+\end{frame}
 
 
 \end{document}
