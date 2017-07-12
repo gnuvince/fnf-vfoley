@@ -23,6 +23,10 @@
   \end{center}
 }
 
+\newcounter{ruleCounter}
+
+\newcommand\ruleNum[0]{\stepcounter{ruleCounter}\arabic{ruleCounter}}
+
 
 \begin{document}
 
@@ -117,9 +121,9 @@
 \end{frame}
 
 \begin{frame}
-  \big{1. An object has a \emph{single} owner}
+  \big{\ruleNum. An object has a \emph{single} owner}
 
-  \big{2. An object is released when its owner goes out of scope}
+  \big{\ruleNum. An object is released when its owner goes out of scope}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -127,9 +131,9 @@
 \end{frame}
 
 \begin{frame}
-  \big{3. An assignment makes a \emph{shallow copy} and \emph{transfers ownership}}
+  \big{\ruleNum. An assignment makes a \emph{shallow copy} and \emph{transfers ownership}}
 
-  \big{4. A variable that owns no object cannot be used}
+  \big{\ruleNum. A variable that owns no object cannot be used}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -145,7 +149,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{5. Some object types do a \emph{full copy} rather than transfer ownership}
+  \big{\ruleNum. Some object types do a \emph{full copy} rather than transfer ownership}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -153,9 +157,9 @@
 \end{frame}
 
 \begin{frame}
-  \big{6. A \emph{shared borrow} is a read-only pointer to a value}
+  \big{\ruleNum. A \emph{shared borrow} is a read-only pointer to a value}
 
-  \big{7. A borrow does not own the value it points to}
+  \big{\ruleNum. A borrow does not own the value it points to}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -163,7 +167,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{8. Many shared borrows to the same value are allowed}
+  \big{\ruleNum. Many shared borrows to the same value are allowed}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -171,7 +175,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{9. A \emph{mutable borrow} is a read-write pointer to a value}
+  \big{\ruleNum. A \emph{mutable borrow} is a read-write pointer to a value}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -179,7 +183,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{10. A single mutable borrow to a value may exist at any given time}
+  \big{\ruleNum. A single mutable borrow to a value may exist at any given time}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -187,7 +191,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{11. Shared and mutable borrows to the same value cannot coexist}
+  \big{\ruleNum. Shared and mutable borrows to the same value cannot coexist}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -217,7 +221,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{12. A borrow must finish before the owner goes out of scope}
+  \big{\ruleNum. A borrow must finish before the owner goes out of scope}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -225,7 +229,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{13. Only the owner can transfer ownership of its object and only when there are no borrows}
+  \big{\ruleNum. Only the owner can transfer ownership of its object and only when there are no borrows}
 \end{frame}
 
 \begin{frame}[fragile]
