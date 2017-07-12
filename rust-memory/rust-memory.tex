@@ -45,11 +45,11 @@
 \end{frame}
 
 \begin{frame}
-  \big{Early goal for Rust: build a fast, parallel, and safe browser engine.}
+  \big{Motivation for Rust: build a fast, parallel, and safe browser engine.}
 
   \begin{itemize}
     \item Browsers did not exploit the machines' parallelism (image decoding, CSS layout)
-    \item Browsers have security flaws that were exploitable (Pwn2Own)
+    \item Browsers had\footnote{They still do.} security flaws that were exploitable (Pwn2Own)
   \end{itemize}
 \end{frame}
 
@@ -96,9 +96,10 @@
 \begin{frame}
   \big{Solution}
   \begin{itemize}
-    \item Insert \texttt{free()} calls at compile-time;
+    \item Insert \emph{free()} calls at compile-time;
+    \item The compiler must understand memory usage;
     \item Restrict how pointers can be used;
-    \item Reject code that would be valid if the compiler can't understand it.
+    \item Reject code that would be fine at execution.
   \end{itemize}
 \end{frame}
 
@@ -123,7 +124,7 @@
 \begin{frame}
   \big{\ruleNum. An object has a \emph{single} owner}
 
-  \big{\ruleNum. An object is released when its owner goes out of scope}
+  \big{\ruleNum. An object is dropped when its owner goes out of scope}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -138,6 +139,8 @@
 
 \begin{frame}[fragile]
   \inputminted{rust}{demos/01_move.rs}
+
+  \footnotesize{Example of program that would work, but is rejected.}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -157,9 +160,9 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. A \emph{shared borrow} is a read-only pointer to a value}
+  \big{\ruleNum. A \emph{shared borrow} is a read-only pointer to an object}
 
-  \big{\ruleNum. A borrow does not own the value it points to}
+  \big{\ruleNum. A borrow does not own the object it points to}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -167,7 +170,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. Many shared borrows to the same value are allowed}
+  \big{\ruleNum. Many shared borrows to the same object are allowed}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -175,7 +178,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. A \emph{mutable borrow} is a read-write pointer to a value}
+  \big{\ruleNum. A \emph{mutable borrow} is a read-write pointer to an object}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -183,7 +186,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. A single mutable borrow to a value may exist at any given time}
+  \big{\ruleNum. A single mutable borrow to an object may exist at any given time}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -191,7 +194,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. Shared and mutable borrows to the same value cannot coexist}
+  \big{\ruleNum. Shared and mutable borrows to the same object cannot coexist}
 \end{frame}
 
 \begin{frame}[fragile]

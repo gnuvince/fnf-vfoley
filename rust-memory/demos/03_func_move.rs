@@ -3,7 +3,7 @@ fn take(v: Vec<i32>) {
     println!("{:?}", v);
 
     // `v` goes out of scope and the vector [2,3,5]
-    // is released.
+    // is dropped.
 }
 
 

@@ -7,7 +7,7 @@ fn borrow(v: &Vec<i32>) {
 
     // The function ends and the ownership
     // is returned to the caller.
-    // The vector [2,3,5] is NOT released.
+    // The vector [2,3,5] is NOT dropped.
 }
 
 

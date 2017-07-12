@@ -5,5 +5,5 @@ fn main() {
         println!("{:?}", v);
     }
     // The variable `v` goes out of scope
-    // and the memory it owns is released.
+    // and the memory it owns is dropped.
 }
