@@ -243,6 +243,30 @@
   \inputminted{rust}{demos/12_move_out.rs}
 \end{frame}
 
+\begin{frame}
+  \centering\Huge{Interlude}
 
+  \big{Moving out of vectors and structs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{An object \emph{cannot} be moved out of a vector element:}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/13_move_out_vec.rs}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{An object \emph{can} be moved out of a struct field:}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/14_move_out_struct.rs}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{/Interlude}
+\end{frame}
 
 \end{document}
