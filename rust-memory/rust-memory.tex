@@ -224,7 +224,7 @@
 \end{frame}
 
 \begin{frame}
-  \big{\ruleNum. A borrow must finish before the owner goes out of scope}
+  \big{\ruleNum. A borrow must end before the owner goes out of scope}
 \end{frame}
 
 \begin{frame}[fragile]
@@ -267,6 +267,22 @@
 
 \begin{frame}
   \centering\Huge{/Interlude}
+\end{frame}
+
+\begin{frame}
+  \big{\ruleNum. The compiler can infer lifetimes...}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/15_lifetime.rs}
+\end{frame}
+
+\begin{frame}
+  \big{\ruleNum. ... but not always}
+\end{frame}
+
+\begin{frame}[fragile]
+  \inputminted{rust}{demos/16_lifetime_disamb.rs}
 \end{frame}
 
 \end{document}
