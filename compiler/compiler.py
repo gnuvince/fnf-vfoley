@@ -166,11 +166,14 @@ def typecheck(symtable, ast):
         else:
             die("type error in %s" % ast["node"])
     elif ast["node"] == "read":
-        pass
+        if ast["id"] not in symtable:
+            die("undeclared variable %s" % ast["id"])
     elif ast["node"] == "print":
         typecheck(symtable, ast["expr"])
     elif ast["node"] == "assign":
         typecheck(symtable, ast["expr"])
+        if ast["id"] not in symtable:
+            die("undeclared variable %s" % ast["id"])
         if ast["expr"]["type"] != symtable[ast["id"]]:
             die("type error in assign")
     elif ast["node"] == "while":
