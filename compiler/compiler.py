@@ -25,7 +25,7 @@ def scan(chars):
         elif chars[i] in ':;+-*/=()':
             yield Token(chars[i])
             i += 1
-        elif chars[i].isalpha():
+        elif chars[i].isalpha() or chars[i] == '_':
             r = re.compile(r'([_a-zA-Z][_a-zA-Z0-9]*)')
             m = re.match(r, chars[i:])
             ident = m.group(1)
