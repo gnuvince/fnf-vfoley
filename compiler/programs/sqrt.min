@@ -1,0 +1,14 @@
+var x: float;
+var guess: float;
+var iter: int;
+
+read x;
+iter = 10;
+guess = 1.0;
+
+while iter do
+  guess = (guess + (x / guess)) / 2.0;
+  iter = iter - 1;
+done
+
+print guess;

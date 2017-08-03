@@ -1,0 +1,22 @@
+graph G {
+    node [shape="rect"];
+
+    x1 [label="x (int)"];
+    x2 [label="x (int)"];
+    x3 [label="x (int)"];
+    x4 [label="x (int)"];
+    body [label="", shape="point"];
+    print [label="print"];
+    assign [label="="];
+    div [label="/ (int)"];
+
+    while -- x1;
+    while -- body;
+    body -- print;
+    print -- x2;
+    body -- assign;
+    assign -- x3;
+    assign -- div;
+    div -- x4;
+    div -- "2 (int)";
+}

@@ -1,0 +1,126 @@
+#+options: toc:nil
+#+latex_header: \usepackage{proof}
+#+latex_header: \usepackage{fullpage}
+
+* Scanner
+#+BEGIN_EXAMPLE
+  id              ::= [_a-zA-Z][_a-zA-Z0-9]*
+  integer_literal ::= [0-9]+
+  float_literal   ::= [0-9]+.[0-9]+
+#+END_EXAMPLE
+* Parser
+#+BEGIN_EXAMPLE
+  program ::= decls stmts
+
+  decls   ::= { decl }
+  decl    ::= "var"  id  ":"  type  ";"
+  type    ::= "int" | "float"
+
+  stmts   ::= { stmt }
+  stmt    ::= "read" id ";"
+            | "print" expr ";"
+            | id "=" expr ";"
+            | "while" expr "do" stmts "done"
+
+  expr    ::= expr1 { "+" expr1 }
+            | expr1 { "-" expr1 }
+
+  expr1   ::= expr2 { "*" expr2 }
+            | expr2 { "/" expr2 }
+
+  expr2   ::= id
+            | integer_literal
+            | float_literal
+            | "(" expr ")"
+#+END_EXAMPLE
+* Type checker
+#+BEGIN_LaTeX
+\[
+\infer{c}{p_1 & p_2 & p_3}
+\]
+#+END_LaTeX
+
+
+#+BEGIN_LaTeX
+  \[
+    \infer{x:int}{x \text{ is an integer literal}}
+    \qquad
+    \infer{x:float}{x \text{ is a float literal}}
+    \qquad
+    \infer{\Gamma \vdash x:\tau}{\Gamma(x) = \tau}
+  \]
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+  \[
+    \infer{\text{read } x}{}
+    \qquad
+    \infer
+    {\Gamma \vdash \text{print } e}
+    {\Gamma \vdash e:\tau}
+    \qquad
+    \infer
+    {\Gamma \vdash x = e}
+    {\Gamma \vdash e:\tau & \Gamma(x)=\tau}
+    \qquad
+    \infer
+    {\Gamma \vdash \text{while } e \text{ do } body \text{ done}}
+    {\Gamma \vdash e:int & \Gamma \vdash body}
+  \]
+#+END_LaTeX
+
+#+BEGIN_LaTeX
+  \[
+    \infer
+    {\Gamma \vdash e_1~op~e_2 : int}
+    {\Gamma \vdash e_1:int & \Gamma \vdash e_2:int & op \in \{+,-,*,/\}}
+    \qquad
+    \infer
+    {\Gamma \vdash e_1~op~e_2 : float}
+    {\Gamma \vdash e_1:float & \Gamma \vdash e_2:float & op \in \{+,-,*,/\}}
+  \]
+#+END_LaTeX
+* Code generator
+#+BEGIN_EXAMPLE
+  Integer arithmetic
+  ==================
+          <code for e1>        # generate code for evaluating e1
+          <code for e2>        # generate code for evaluating e2
+          pop $s2              # load value of e2 in $s2
+          pop $s1              # load value of e1 in $s1
+          add $s0, $s1, $s2    # Do artihmetic operation
+          push $s0             # Put result on stack
+
+  Assign integer
+  ==============
+          <code for expr>      # generate code for evaluating expr
+          pop $s0              # load value into $s0
+          sw $s0, <addr for x> # save value at the address for x
+
+  Read integer
+  ============
+          li $v0, 5            # syscall 5 = read_int
+          syscall              # Invoke syscall
+          push $v0             # $v0 contains result
+
+
+  Print integer
+  =============
+          <code for expr>      # generate code for evaluating expression
+          pop $a0              # put result in $a0 (arg for print_int)
+          li $v0, 1            # syscall 1 = print_int
+          syscall              # invoke syscall
+          la $a0, newline      # load "\n" into $a0
+          li $v0, 4            # syscall 4 = print_str
+          syscall              # print a new line
+
+  While loop
+  ==========
+      l0:
+          <code for expr>      # generate code for evaluating condition
+          pop $s0              # load condition value in $s0
+          beqz $s0, le         # finish loop if $s0 is zero
+          <code for body>      # generate code for running body
+          j l0                 # jump back to condition evaluation
+      le:
+#+END_EXAMPLE

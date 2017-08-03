@@ -1,0 +1,128 @@
+\documentclass[9pt]{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{ amssymb }
+\usepackage{ multirow }
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+\newcommand{\Fbox}[1]{\fbox{\strut#1}}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{Writing a compiler in 400 lines of code\\(with Python 3)}
+\end{frame}
+
+\begin{frame}[fragile]
+  \centering\Huge{Minilang}
+
+  \footnotesize
+\begin{verbatim}
+var x: float;
+var guess: float;
+var iter: int;
+
+read x;
+iter = 10;
+guess = 1.0;
+
+while iter do
+  guess = (guess + (x / guess)) / 2.0;
+  iter = iter - 1;
+done
+
+print guess;
+\end{verbatim}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \centering\Huge{Original source}
+  \vskip 1cm
+  \big{
+    while x do print x; x = x / 2; done
+  }
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Scanning into tokens}
+  \big{
+    \Fbox{while}~%
+    \Fbox{id (x)}~%
+    \Fbox{do}~%
+    \Fbox{print}~%
+    \Fbox{id (x)}~%
+    \Fbox{;}~%
+    \Fbox{id (x)}~%
+    \Fbox{=}~%
+    \Fbox{id (x)}~%
+    \Fbox{/}~%
+    \Fbox{int (2)}~%
+    \Fbox{;}~%
+    \Fbox{done}
+  }
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Parsing into AST}
+
+  \centering\includegraphics[scale=0.6]{ast.pdf}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Typecheck into Typed AST}
+
+  \centering\includegraphics[scale=0.6]{tast.pdf}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \centering\Huge{Generating assembly}
+
+  \footnotesize
+\begin{verbatim}
+main:
+    addi $fp, $sp, 0
+    addi $sp, $sp, -4
+L_0:
+    lw $s0, 0($fp)
+    sw $s0, 0($sp)
+    addi $sp, $sp, -4
+    addi $sp, $sp, 4
+    lw $s0, 0($sp)
+    beqz $s0, L_1
+    ...
+    j L_0
+L_1:
+    li $v0, 10
+    syscall
+\end{verbatim}
+\end{frame}
+
+
+\end{document}

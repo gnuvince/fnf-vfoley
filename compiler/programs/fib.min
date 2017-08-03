@@ -1,0 +1,17 @@
+var a: int;
+var b: int;
+var n: int;
+var t: int;
+
+read n;
+
+a = 0;
+b = 1;
+
+while n do
+  print a;
+  t = a;
+  a = b;
+  b = b + t;
+  n = n - 1;
+done
