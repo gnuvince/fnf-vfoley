@@ -57,7 +57,36 @@ def create_offsets(symtable):
 
 
 def codegen(offsets, symtable, ast):
-    pass
+    label = 0
+    newline = [
+        'la $a0, newline',
+        'li $v0, 4',
+        'syscall'
+    ]
+    sp_off = -4*len(offsets)
+    program =[
+        '.data',
+        'newline: .asciiz "\\n"',
+        '.text',
+        'main:',
+        'addi $fp, $sp, 0',
+        'addi $sp, $sp, %d' % sp_off
+    ]
+
+    def codegen_stmt(stmt):
+        pass
+
+    def codegen_expr(expr):
+        pass
+
+    for stmt in ast:
+        codegen_stmt(stmt)
+
+    program += [
+        'li $v0, 10',
+        'syscall'
+    ]
+    return program
 
 
 def main():
