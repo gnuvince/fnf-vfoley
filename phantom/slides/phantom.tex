@@ -7,11 +7,9 @@
 \usepackage[english]{babel}
 \usepackage{listings}
 \usepackage{graphicx}
+\usepackage{hyperref}
 \usepackage{ amssymb }
 \usepackage{ multirow }
-
-\usepackage{xcolor}
-
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]{}
@@ -26,7 +24,6 @@
   keepspaces=true,
   escapeinside=\#\#
 }
-
 
 \renewcommand\big[1]{
   \begin{center}
@@ -44,7 +41,6 @@
     \includegraphics[scale=0.5]{phantom.eps}
   \end{center}
 \end{frame}
-
 
 \begin{frame}
   \big{Example problem \#1}
@@ -121,43 +117,9 @@
     \footnotesize
     \begin{itemize}
       \item Needs one type per currency
-      \item Can be complicated by details of implementation
       \item Not available in all languages---like Erlang :(
     \end{itemize}
   \end{minipage}
-\end{frame}
-
-\begin{frame}
-  \big{Phantom Types}
-
-  \begin{itemize}
-    \item Type parametrized another type; {\tt class Money<T> \{ $\ldots$ \}};
-    \item The parametric type is \emph{not} used on the right-hand side;
-    \item Typically, the parametric type has no values.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \big{Phantom Types}
-
-  \begin{itemize}
-    \item The purpose is to encode an information in the type to let the typechecker warn us when we make a mistake;
-    \item It can be used to distinguish between different use cases when a single type has multiple interpretation, e.g., a HTML string and a SQL string.
-  \end{itemize}
-\end{frame}
-
-\begin{frame}
-  \big{Example \#2}
-
-  \centering Stumping script kiddies with stricter strings
-
-  \vskip1cm
-
-  \color{blue}{\url{http://blog.moertel.com/posts/2006-10-18-a-type-based-solution-to-the-strings-problem.html}}
-\end{frame}
-
-\begin{frame}
-  \centering \includegraphics[scale=0.8]{phantom.eps}
 \end{frame}
 
 \end{document}
