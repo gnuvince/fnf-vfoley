@@ -1,0 +1,253 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{charter}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+\usepackage{color}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{The Fundamentals of Regular Expressions}
+\end{frame}
+
+\begin{frame}
+  \big{The Building Blocks}
+  \begin{center}
+    \begin{tabular}{ll}
+      $\epsilon$ & Match the empty string \\
+      $c$ & Match the character $c$ \\
+      $R_1 R_2$ & Match $R_1$ followed by $R_2$ \\
+      $R_1 \vert R_2$ & Match $R_1$ or $R_2$ \\
+      $R*$ & Match $R$ zero or more times
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \big{Examples}
+  \begin{itemize}
+    \item $w$ : match the character $w$
+    \item $y \vert n$ : match the character $y$ or the character $n$
+    \item $bar$ : match the character $b$, followed by $a$, followed by $r$
+    \item $yo!*$ : match $yo$, followed by any number of bangs
+    \item $(yo!)*$ : match any number of $yo!$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{The Shortcuts}
+  \begin{center}
+    \begin{tabular}{lll}
+      $R?$ & Match $R$ 0 or 1 times & $R \vert \epsilon$ \\
+      $R+$ & Match $R$ 1 or more times & $RR*$ \\
+      $R\{n\}$ & Match $R$ exactly $n$ times & $RRR...R$ ($n$ times) \\
+      $[xyz]$ & Match the character $x$, $y$, or $z$ & $x \vert y \vert z$ \\
+      $[a-z]$ & Match the character $a$, $b$, ..., or $z$ & $a \vert b \vert ... \vert z$
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  Running example: matching integers
+
+  \[
+    (+ \vert -)?[0-9]+
+  \]
+  \pause
+  \[
+    (+ \vert - \vert \epsilon)~(0 \vert 1 \vert ... \vert 9)~(0 \vert 1 \vert ... \vert 9)*
+  \]
+\end{frame}
+
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & \textcolor{red}{(+ \vert - \vert \epsilon)}~(0 \vert 1 \vert ... \vert 9)~(0 \vert 1 \vert ... \vert 9)* \\
+    & \textcolor{red}{-}~1~7~9
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)}~(0 \vert 1 \vert ... \vert 9)* \\
+    & -~\textcolor{red}{1}~7~9
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~(0 \vert 1 \vert ... \vert 9)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)*} \\
+    & -~1~\textcolor{red}{7}~9
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~(0 \vert 1 \vert ... \vert 9)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)*} \\
+    & -~1~7~\textcolor{red}{9}
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~(0 \vert 1 \vert ... \vert 9)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)*} \\
+    & -~1~7~9
+  \end{align*}
+
+  \centering\Huge{:)}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & \textcolor{red}{(+ \vert - \vert \epsilon)}~(0 \vert 1 \vert ... \vert 9)~(0 \vert 1 \vert ... \vert 9)* \\
+    & \textcolor{red}{3}
+  \end{align*}
+\end{frame}
+
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)}~(0 \vert 1 \vert ... \vert 9)*\\
+    & \textcolor{red}{3}
+  \end{align*}
+\end{frame}
+
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~(0 \vert 1 \vert ... \vert 9)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)*} \\
+    & 3
+  \end{align*}
+  \centering\Huge{:)}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & \textcolor{red}{(+ \vert - \vert \epsilon)}~(0 \vert 1 \vert ... \vert 9)~(0 \vert 1 \vert ... \vert 9)* \\
+    & \textcolor{red}{+}~{z}
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)}~(0 \vert 1 \vert ... \vert 9)* \\
+    & {+}~\textcolor{red}{z}
+  \end{align*}
+
+  \centering\Huge{:(}
+\end{frame}
+
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & \textcolor{red}{(+ \vert - \vert \epsilon)}~(0 \vert 1 \vert ... \vert 9)~(0 \vert 1 \vert ... \vert 9)* \\
+    & \textcolor{red}{-}
+  \end{align*}
+\end{frame}
+
+\begin{frame}
+  \big{How matching works}
+
+  \begin{align*}
+    & (+ \vert - \vert \epsilon)~\textcolor{red}{(0 \vert 1 \vert ... \vert 9)}~(0 \vert 1 \vert ... \vert 9)* \\
+    & {-}
+  \end{align*}
+
+  \centering\Huge{:(}
+\end{frame}
+
+\begin{frame}
+  \big{The Building Blocks}
+  \begin{center}
+    \begin{tabular}{ll}
+      $\epsilon$ & Match the empty string \\
+      $c$ & Match the character $c$ \\
+      $R_1 R_2$ & Match $R_1$ followed by $R_2$ \\
+      $R_1 \vert R_2$ & Match $R_1$ or $R_2$ \\
+      $R*$ & Match $R$ zero or more times
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \big{In practice}
+  \begin{itemize}
+    \item Many more shortcuts:
+    \begin{itemize}
+      \item $.$ for any character (except, sometimes, newline)
+      \item $\backslash{}d$ for digit
+      \item $\backslash{}w$ for whitespace
+      \item etc.
+    \end{itemize}
+    \item Rules for escaping:
+    \begin{itemize}
+        \item In Perl, $($ and $)$ are for grouping; use $\backslash{}($ and $\backslash{})$ to match parentheses (make sure to backslash the backslash!)
+      \item In Emacs, $($ and $)$ match themselves; use backslashes for grouping
+    \end{itemize}
+    \item Greedy vs. lazy
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{In practice}
+
+  \big{Same basic principles apply}
+  \pause
+  \centering{Until you get into back-references...}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Fin}
+\end{frame}
+
+\end{document}
