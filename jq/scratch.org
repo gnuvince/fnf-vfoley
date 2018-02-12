@@ -1,0 +1,303 @@
+#+PROPERTY: header-args    :results value verbatim
+
+* Basic filters
+** .
+#+BEGIN_SRC sh
+  echo null '"abc"' '[2,3,5]' '{"name": "Vincent", "age": 34}' \
+       | jq .
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+null
+"abc"
+[
+  2,
+  3,
+  5
+]
+{
+  "name": "Vincent",
+  "age": 34
+}
+#+end_example
+
+#+BEGIN_SRC sh
+  echo null '"abc"' '[2,3,5]' '{"name": "Vincent", "age": 34}' \
+       | jq -c .
+#+END_SRC
+
+#+RESULTS:
+: null
+: "abc"
+: [2,3,5]
+: {"name":"Vincent","age":34}
+
+** .field
+#+BEGIN_SRC sh
+  echo '{"name":"Vincent","age":34}' \
+       | jq .name
+
+  echo '{"name":"Vincent","age":34}' \
+       | jq .age
+
+  echo '{"name":"Vincent","age":34}' \
+       | jq .gender
+#+END_SRC
+
+#+RESULTS:
+: "Vincent"
+: 34
+: null
+
+
+#+BEGIN_SRC sh
+  echo '{"employee": {"name": "Vincent"}, "employer": {"name": "AdGear"}}' \
+      | jq .employee.name
+
+  echo '{"employee": {"name": "Vincent"}, "employer": {"name": "AdGear"}}' \
+      | jq -c .employer
+
+  echo '{"employee": {"name": "Vincent"}, "employer": {"name": "AdGear"}}' \
+       | jq -c '.employer | .name'
+#+END_SRC
+
+#+RESULTS:
+: "Vincent"
+: {"name":"AdGear"}
+: "AdGear"
+
+#+BEGIN_SRC sh
+  echo '"a string"' \
+      | jq .name 2>&1 || true
+#+END_SRC
+
+#+RESULTS:
+: jq: error (at <stdin>:1): Cannot index string with string "name"
+
+** .field?
+#+BEGIN_SRC sh
+  echo '"a string"' \
+      | jq .name?
+#+END_SRC
+
+#+RESULTS:
+
+** .[<expr>]
+#+BEGIN_SRC sh
+  echo '{"name":"Vincent","age":34}' \
+      | jq '.["name"]'
+
+  echo '{"name":"Vincent","age":34}' \
+      | jq '.["age"]'
+
+  echo '{"name":"Vincent","age":34}' \
+      | jq '.["gender"]'
+#+END_SRC
+
+#+RESULTS:
+: "Vincent"
+: 34
+: null
+
+
+#+BEGIN_SRC sh
+  echo "[2,3,5]" | jq -c '.[1]'
+  echo "[2,3,5]" | jq -c '.[0:2]'
+#+END_SRC
+
+#+RESULTS:
+: 3
+: [2,3]
+
+** .[]
+#+BEGIN_SRC sh
+  echo '[2,3,5]' | jq '.[]'
+#+END_SRC
+
+#+RESULTS:
+: 2
+: 3
+: 5
+
+#+BEGIN_SRC sh
+  echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
+      | jq -c '.[]'
+
+  echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
+      | jq -c '.[] | .id'
+#+END_SRC
+
+#+RESULTS:
+: {"id":2}
+: {"id":3}
+: {"id":5}
+: 2
+: 3
+: 5
+
+#+BEGIN_SRC sh
+  echo '"a string"' \
+      | jq '.[]' 2>&1 || true
+#+END_SRC
+
+#+RESULTS:
+: jq: error (at <stdin>:1): Cannot iterate over string ("a string")
+
+** .[]?
+#+BEGIN_SRC sh
+  echo '"a string"' \
+      | jq '.[]?'
+#+END_SRC
+
+#+RESULTS:
+
+** ,
+
+#+BEGIN_SRC sh
+  echo '{"name":"Vincent","age":34}' \
+      | jq '.name, .age'
+#+END_SRC
+
+#+RESULTS:
+: "Vincent"
+: 34
+
+** |
+
+#+BEGIN_SRC sh
+  echo '{"name":"Vincent","age":34}' \
+      | jq '.name | length'
+#+END_SRC
+
+#+RESULTS:
+: 7
+
+#+BEGIN_SRC sh
+  echo '{"name":"Vincent","languages":["erlang","rust","python"]}' \
+      | jq '.languages | .[] | ascii_upcase'
+#+END_SRC
+
+#+RESULTS:
+: "ERLANG"
+: "RUST"
+: "PYTHON"
+
+* Literal filters
+#+BEGIN_SRC sh
+  echo '[2,3,5]' | jq '.[] | 42'
+#+END_SRC
+
+#+RESULTS:
+: 42
+: 42
+: 42
+
+* Array construction
+#+BEGIN_SRC sh
+  echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
+      | jq -c '[.[] | .id]'
+
+  echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
+      | jq -c '[.[] | (.id, .id*100)]'
+
+  echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
+      | jq -c '[.[] | (.id, .id*100) | tostring]'
+#+END_SRC
+
+#+RESULTS:
+: [2,3,5]
+: [2,200,3,300,5,500]
+: ["2","200","3","300","5","500"]
+
+* Object construction
+#+BEGIN_SRC sh
+  echo '["jq", "sed", "awk", "ppbert"]' \
+      | jq -c '{ program : .[] }'
+#+END_SRC
+
+#+RESULTS:
+: {"program":"jq"}
+: {"program":"sed"}
+: {"program":"awk"}
+: {"program":"ppbert"}
+
+The parentheses are required around the key expression (otherwise it's
+assumed to be a literal key name), but not around the value.
+
+#+BEGIN_SRC sh
+  echo '["jq", "sed", "awk", "ppbert"]' \
+      | jq -c '.[] | { (.) : .|length }'
+#+END_SRC
+
+#+RESULTS:
+: {"jq":2}
+: {"sed":3}
+: {"awk":3}
+: {"ppbert":6}
+
+#+BEGIN_SRC sh
+  echo '["jq", "sed", "awk", "ppbert"]' \
+      | jq -c '{ (.[]) : .[]|length }'
+#+END_SRC
+
+#+RESULTS:
+#+begin_example
+{"jq":2}
+{"jq":3}
+{"jq":3}
+{"jq":6}
+{"sed":2}
+{"sed":3}
+{"sed":3}
+{"sed":6}
+{"awk":2}
+{"awk":3}
+{"awk":3}
+{"awk":6}
+{"ppbert":2}
+{"ppbert":3}
+{"ppbert":3}
+{"ppbert":6}
+#+end_example
+* Common tasks
+** Split string into an array
+Use the / operator
+
+#+BEGIN_SRC sh
+  echo '"foo,bar,baz,quux"' \
+      | jq -c '. / ","'
+
+  echo '"foo,bar,baz,quux"' \
+      | jq -c '. / "," | .[]'
+#+END_SRC
+
+#+RESULTS:
+: ["foo","bar","baz","quux"]
+: "foo"
+: "bar"
+: "baz"
+: "quux"
+
+** Select only certain objects
+#+BEGIN_SRC sh
+  echo '"jq"' '"sed"' '"awk"' \
+      | jq 'select(length == 3)'
+#+END_SRC
+
+#+RESULTS:
+: "sed"
+: "awk"
+
+** Reduce multiple values (not array) into one
+Disgusting syntax:
+
+reduce <expr yielding many results> as <item varname> (<init expr>; <expr>)
+
+#+BEGIN_SRC sh
+  echo '[2,3,5]' \
+      | jq 'reduce (.[] | .*10) as $item (""; . + ($item | tostring))'
+#+END_SRC
+
+#+RESULTS:
+: "203050"

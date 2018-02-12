@@ -1,0 +1,96 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{charter}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+ \usepackage{epstopdf}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{jq}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Principles}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Basic Principle \#1}
+
+  \begin{center}
+    jq reads JSON values from stdin, applies a \textit{filter} to them
+  \end{center}
+
+  \begin{lstlisting}
+    > jq FILTER < values.json
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \big{Basic Principle \#2}
+
+  \begin{center}
+    A filter consumes $m$ JSON values, produces $n$ JSON values
+  \end{center}
+
+  \begin{center}
+    \includegraphics[scale=0.2]{jq-filter.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Basic Principle \#3}
+
+  \begin{center}
+    Filters can be piped together
+  \end{center}
+
+  \begin{lstlisting}
+    > jq 'FILTER1 | FILTER2 | FILTER3' < values.json
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Simple Tasks}
+\end{frame}
+
+
+\begin{frame}
+  \centering\Huge{Miscellany}
+\end{frame}
+
+\begin{frame}
+  \big{Some Tips}
+
+  \begin{itemize}
+    \item jq is slow; use \textit{grep} to reduce the amount of data sent to jq
+    \item if a filter is too long, write it in a file and use \textit{jq -f FILE}
+  \end{itemize}
+\end{frame}
+
+\end{document}
