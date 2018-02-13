@@ -1,0 +1,11 @@
+digraph G {
+    n1 [label = "JSON Value", shape = "rect"];
+    n2 [label = "JSON Value", shape = "rect"];
+    n3 [label = "JSON Value", shape = "rect"];
+    n4 [label = "JSON Value", shape = "rect"];
+
+    n1 -> Filter;
+    Filter -> n2;
+    Filter -> n3;
+    Filter -> n4;
+}

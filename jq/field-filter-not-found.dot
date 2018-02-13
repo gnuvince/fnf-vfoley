@@ -1,0 +1,7 @@
+digraph G {
+    v1 [label = "{\"emoji\": \"^_^\"}", shape = "rect"];
+    v2 [label = "null", shape = "rect"];
+    filter [label = ".oops"];
+
+    v1 -> filter -> v2;
+}

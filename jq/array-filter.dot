@@ -1,0 +1,7 @@
+digraph G {
+    v1 [label = "[2, 3, 5]", shape = "rect"];
+    v2 [label = "5", shape = "rect"];
+    filter [label = ".[2]"];
+
+    v1 -> filter -> v2;
+}

@@ -1,0 +1,10 @@
+digraph G {
+    n1 [label = "{\"name\": \"Amanj\", \"age\": 21, \"team\": \"Data\"}", shape = "rect"];
+    n2 [label = "\"Amanj\"", shape = "rect"];
+    n3 [label = "\"Data\"", shape = "rect"];
+    filter [label = ".name , .team"];
+
+    n1 -> filter;
+    filter -> n2;
+    filter -> n3;
+}

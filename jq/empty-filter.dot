@@ -1,0 +1,6 @@
+digraph G {
+    n1 [label = "{\"timestamp\": 1518452614}", shape = "rect"];
+    filter [label = "empty"];
+
+    n1 -> filter;
+}

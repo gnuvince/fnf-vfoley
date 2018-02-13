@@ -1,0 +1,8 @@
+digraph G {
+    n1 [label = "{\"timestamp\": 1518452614}", shape = "rect"];
+    n2 [label = "1518452614", shape = "rect"];
+    filter [label = ".timestamp"];
+
+    n1 -> filter;
+    filter -> n2;
+}

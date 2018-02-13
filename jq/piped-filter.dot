@@ -1,0 +1,10 @@
+digraph G {
+    n1 [label = "{\"name\": \"Vincent\"}", shape = "rect"];
+    n2 [label = "\"VINCENT\"", shape = "rect"];
+    filter1 [label = ".name"];
+    filter2 [label = "ascii_upcase"];
+
+    n1 -> filter1;
+    filter1 -> filter2 [label = "\"Vincent\""];
+    filter2 -> n2;
+}

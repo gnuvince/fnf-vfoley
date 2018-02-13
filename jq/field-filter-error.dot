@@ -1,0 +1,7 @@
+digraph G {
+    v1 [label = "\"smarty pants\"", shape = "rect"];
+    v2 [label = "Error", shape = "octagon"];
+    filter [label = ".oops"];
+
+    v1 -> filter -> v2;
+}

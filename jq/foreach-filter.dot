@@ -1,0 +1,12 @@
+digraph G {
+    n1 [label = "[2,3,5]", shape = "rect"];
+    n2 [label = "2", shape = "rect"];
+    n3 [label = "3", shape = "rect"];
+    n4 [label = "5", shape = "rect"];
+    filter [label = ".[]"];
+
+    n1 -> filter;
+    filter -> n2;
+    filter -> n3;
+    filter -> n4;
+}

@@ -1,0 +1,10 @@
+digraph G {
+    n1 [label = "{\"name\": \"Amanj\", \"languages\": [\"Haskell\", \"Scala\"]}", shape = "rect"];
+    n2 [label = "\"Haskell!!\"", shape = "rect"];
+    n3 [label = "\"Scala!!\"", shape = "rect"];
+    filter [label = ".languages | .[] | . + \"!!\""];
+
+    n1 -> filter;
+    filter -> n2;
+    filter -> n3;
+}

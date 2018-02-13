@@ -1,8 +1,8 @@
 \documentclass{beamer}
 
 \usefonttheme{serif}
-\usepackage{charter}
-
+\usepackage{ebgaramond}
+\usepackage{ tipa }
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 \usepackage{listings}
@@ -43,11 +43,12 @@
   \big{Basic Principle \#1}
 
   \begin{center}
-    jq reads JSON values from stdin, applies a \textit{filter} to them
+    jq applies a \textit{filter} to JSON values
   \end{center}
 
   \begin{lstlisting}
-    > jq FILTER < values.json
+    > jq FILTER values.json
+    > grep '^{' values.json | jq FILTER
   \end{lstlisting}
 \end{frame}
 
@@ -55,11 +56,19 @@
   \big{Basic Principle \#2}
 
   \begin{center}
-    A filter consumes $m$ JSON values, produces $n$ JSON values
+    A filter consumes a JSON value and produces $n$ JSON values
   \end{center}
 
   \begin{center}
-    \includegraphics[scale=0.2]{jq-filter.pdf}
+    \begin{minipage}{.3\textwidth}
+      \includegraphics[scale=0.44]{dot-filter.pdf}
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+      \includegraphics[scale=0.44]{foreach-filter.pdf}
+    \end{minipage}
+    \begin{minipage}{.3\textwidth}
+      \includegraphics[scale=0.44]{empty-filter.pdf}
+    \end{minipage}
   \end{center}
 \end{frame}
 
@@ -70,15 +79,75 @@
     Filters can be piped together
   \end{center}
 
-  \begin{lstlisting}
-    > jq 'FILTER1 | FILTER2 | FILTER3' < values.json
-  \end{lstlisting}
+  \begin{center}
+    \includegraphics[scale=0.6]{piped-filter.pdf}
+  \end{center}
 \end{frame}
 
 \begin{frame}
-  \centering\Huge{Simple Tasks}
+  \centering\Huge{Basic Filters}
 \end{frame}
 
+\begin{frame}[fragile]
+  \big{Identity --- \texttt{.}}
+  \begin{center}
+    \includegraphics[scale=0.6]{identity-filter.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Field selection --- \texttt{.field, .field?}}
+  \begin{center}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{field-filter.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{field-filter-not-found.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{field-filter-error.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{field-filter-no-error.pdf}
+    \end{minipage}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Array selection --- \texttt{.[N], .[N]?, .[], .[]?}}
+  \begin{center}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{array-filter.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{array-filter-not-found.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{array-filter-range.pdf}
+    \end{minipage}
+    \begin{minipage}{.24\textwidth}
+      \includegraphics[scale=0.44]{array-filter-multi.pdf}
+    \end{minipage}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Multiple results --- \texttt{,}}
+  \begin{center}
+    \includegraphics[scale=0.8]{comma-filter.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Pipeline --- \texttt{\textpipe}}
+  \begin{center}
+    \includegraphics[scale=0.8]{pipe-filter.pdf}
+  \end{center}
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Demos}
+\end{frame}
 
 \begin{frame}
   \centering\Huge{Miscellany}
