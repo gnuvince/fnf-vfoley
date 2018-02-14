@@ -188,11 +188,6 @@ null
   echo '[2,3,5]' | jq '.[] | 42'
 #+END_SRC
 
-#+RESULTS:
-: 42
-: 42
-: 42
-
 * Array construction
 #+BEGIN_SRC sh
   echo '[{"id": 2}, {"id": 3}, {"id": 5}]' \
@@ -205,22 +200,11 @@ null
       | jq -c '[.[] | (.id, .id*100) | tostring]'
 #+END_SRC
 
-#+RESULTS:
-: [2,3,5]
-: [2,200,3,300,5,500]
-: ["2","200","3","300","5","500"]
-
 * Object construction
 #+BEGIN_SRC sh
   echo '["jq", "sed", "awk", "ppbert"]' \
       | jq -c '{ program : .[] }'
 #+END_SRC
-
-#+RESULTS:
-: {"program":"jq"}
-: {"program":"sed"}
-: {"program":"awk"}
-: {"program":"ppbert"}
 
 The parentheses are required around the key expression (otherwise it's
 assumed to be a literal key name), but not around the value.
@@ -230,36 +214,10 @@ assumed to be a literal key name), but not around the value.
       | jq -c '.[] | { (.) : .|length }'
 #+END_SRC
 
-#+RESULTS:
-: {"jq":2}
-: {"sed":3}
-: {"awk":3}
-: {"ppbert":6}
-
 #+BEGIN_SRC sh
   echo '["jq", "sed", "awk", "ppbert"]' \
       | jq -c '{ (.[]) : .[]|length }'
 #+END_SRC
-
-#+RESULTS:
-#+begin_example
-{"jq":2}
-{"jq":3}
-{"jq":3}
-{"jq":6}
-{"sed":2}
-{"sed":3}
-{"sed":3}
-{"sed":6}
-{"awk":2}
-{"awk":3}
-{"awk":3}
-{"awk":6}
-{"ppbert":2}
-{"ppbert":3}
-{"ppbert":3}
-{"ppbert":6}
-#+end_example
 * Common tasks
 ** Split string into an array
 Use the / operator
@@ -272,22 +230,11 @@ Use the / operator
       | jq -c '. / "," | .[]'
 #+END_SRC
 
-#+RESULTS:
-: ["foo","bar","baz","quux"]
-: "foo"
-: "bar"
-: "baz"
-: "quux"
-
 ** Select only certain objects
 #+BEGIN_SRC sh
   echo '"jq"' '"sed"' '"awk"' \
       | jq 'select(length == 3)'
 #+END_SRC
-
-#+RESULTS:
-: "sed"
-: "awk"
 
 ** Reduce multiple values (not array) into one
 Disgusting syntax:
@@ -298,6 +245,3 @@ reduce <expr yielding many results> as <item varname> (<init expr>; <expr>)
   echo '[2,3,5]' \
       | jq 'reduce (.[] | .*10) as $item (""; . + ($item | tostring))'
 #+END_SRC
-
-#+RESULTS:
-: "203050"
