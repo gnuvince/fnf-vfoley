@@ -1,0 +1,59 @@
+#+PROPERTY: header-args    :results value verbatim
+* Timestamp
+#+BEGIN_SRC sh
+  jq '.timestamp' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq '.timestamp | todate' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq '.timestamp | strftime("%d %B, %Y")' < bid_req.json
+#+END_SRC
+
+* Geo info
+#+BEGIN_SRC sh
+  jq '.bid_request.device.geo.ext.normalized_city,
+      .bid_request.device.geo.region,
+      .bid_request.device.geo.country' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq '.bid_request.device.geo | .ext.normalized_city, .region, .country' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq '.bid_request.device.geo | "\(.ext.normalized_city) \(.region) \(.country)"' < bid_req.json
+#+END_SRC
+* Site
+#+BEGIN_SRC sh
+  jq 'if (.bid_request.site.page | startswith("https")) then "secure" else "unsecure" end' < bid_req.json
+#+END_SRC
+
+* IP
+#+BEGIN_SRC sh
+  jq -c '.bid_request.device.ip | split(".")' < bid_req.json
+  jq -c '.bid_request.device.ip / "."' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq -c '.bid_request.device.ip / "." | map(tonumber)' < bid_req.json
+#+END_SRC
+
+
+#+BEGIN_SRC sh
+  jq -c '.bid_request.device.ip / "."
+        | map(tonumber)
+        | reduce .[] as $oct (0; (. * 256) + $oct)' < bid_req.json
+#+END_SRC
+* Hostname
+#+BEGIN_SRC sh
+  jq '.hostname = .hostname + ".sys.adgear.com" | .hostname' < bid_req.json
+  jq '.hostname |= . + ".sys.adgear.com" | .hostname' < bid_req.json
+#+END_SRC

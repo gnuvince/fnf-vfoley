@@ -1,0 +1,6 @@
+digraph G {
+    n1 [label = "[]", shape = "rect"];
+    filter [label = ".[]"];
+
+    n1 -> filter;
+}

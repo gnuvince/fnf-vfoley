@@ -76,7 +76,7 @@
   \big{Basic Principle \#3}
 
   \begin{center}
-    Filters can be piped together
+    Filters can be combined into more complex filters
   \end{center}
 
   \begin{center}
@@ -114,7 +114,7 @@
 \end{frame}
 
 \begin{frame}[fragile]
-  \big{Array selection --- \texttt{.[N], .[N]?, .[], .[]?}}
+  \big{Array selection --- \texttt{.[N], .[N]?}}
   \begin{center}
     \begin{minipage}{.24\textwidth}
       \includegraphics[scale=0.44]{array-filter.pdf}
@@ -130,6 +130,25 @@
     \end{minipage}
   \end{center}
 \end{frame}
+
+\begin{frame}[fragile]
+  \big{Array foreach --- \texttt{.[], .[]?}}
+  \begin{center}
+    \begin{minipage}{.34\textwidth}
+      \includegraphics[scale=0.44]{foreach-filter.pdf}
+    \end{minipage}
+    \begin{minipage}{.2\textwidth}
+      \includegraphics[scale=0.44]{foreach-filter-empty.pdf}
+    \end{minipage}
+    \begin{minipage}{.2\textwidth}
+      \includegraphics[scale=0.44]{foreach-filter-error.pdf}
+    \end{minipage}
+    \begin{minipage}{.2\textwidth}
+      \includegraphics[scale=0.44]{foreach-filter-no-error.pdf}
+    \end{minipage}
+  \end{center}
+\end{frame}
+
 
 \begin{frame}[fragile]
   \big{Multiple results --- \texttt{,}}
@@ -151,6 +170,26 @@
 
 \begin{frame}
   \centering\Huge{Miscellany}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Invalid JSON}
+
+  If you may have some invalid JSON (e.g., ngrepping rtb-gw):
+
+  \begin{lstlisting}
+    > jq -R 'fromjson? | <FILTER>'
+  \end{lstlisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Avoid nulls on stdout}
+
+  If you may have many null values, you can get rid of them:
+
+  \begin{lstlisting}
+    > jq '.rare_field // empty'
+  \end{lstlisting}
 \end{frame}
 
 \begin{frame}
