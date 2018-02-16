@@ -1,6 +1,6 @@
 digraph G {
     n1 [label = "\"nope\"", shape = "rect"];
-    filter [label = ".[]"];
+    filter [label = ".[]?"];
 
     n1 -> filter;
 }
