@@ -66,7 +66,7 @@
 
   \begin{center}macOS\end{center}
   \begin{mylisting}
-    > brew cask install docker
+    > brew install docker
   \end{mylisting}
 \end{frame}
 
@@ -75,24 +75,25 @@
 > docker version
 
 Client:
- Version:       18.02.0-ce
- API version:   1.36
- Go version:    go1.9.3
- Git commit:    fc4de44
- Built:         Wed Feb  7 21:16:24 2018
- OS/Arch:       linux/amd64
- Experimental:  false
- Orchestrator:  swarm
+ Version:	18.02.0-ce
+ API version:	1.36
+ Go version:	go1.9.3
+ Git commit:	fc4de44
+ Built:	Wed Feb  7 21:16:24 2018
+ OS/Arch:	linux/amd64
+ Experimental:	false
+ Orchestrator:	swarm
 
 Server:
  Engine:
-  Version:      18.02.0-ce
-  API version:  1.36 (minimum version 1.12)
-  Go version:   go1.9.3
-  Git commit:   fc4de44
-  Built:        Wed Feb  7 21:14:54 2018
-  OS/Arch:      linux/amd64
-  Experimental: false
+  Version:	18.02.0-ce
+  API version:	1.36 (minimum version 1.12)
+  Go version:	go1.9.3
+  Git commit:	fc4de44
+  Built:	Wed Feb  7 21:14:54 2018
+  OS/Arch:	linux/amd64
+  Experimental:	false
+
 \end{mylisting}
 (If the \emph{Server} section is missing, you don't have permissions: add
 yourself to the \texttt{docker} group and log back in.)
@@ -102,7 +103,7 @@ yourself to the \texttt{docker} group and log back in.)
   \big{Containers?}
 
   \begin{itemize}
-    \item Build, package, and run an application in a \emph{segregated environment}
+    \item Package and run an application in a \emph{segregated environment}
     \item Namespaces provide own filesystem, process list, network stack, etc.
     \item Cgroups to limit CPU, memory, etc.
     \item More lightweight than VMs (e.g., VMWare)
@@ -315,14 +316,8 @@ alpine        latest  ...  2 months ago        4.15MB
 
   \big{Dockerfile}
   \begin{mylisting}
-    # Use python:3.6 as our base image
     FROM python:3.6
-
-    # Copy `hello.py` (on host) to
-    # `/app/hello.py` (on container)
     COPY hello.py /app/hello.py
-
-    # Invoke `hello.py` when launching container
     ENTRYPOINT /usr/bin/python /app/hello.py
   \end{mylisting}
 \end{frame}
