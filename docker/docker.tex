@@ -1,0 +1,345 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+\usepackage{xcolor}
+\usepackage{tcolorbox}
+\tcbuselibrary{listings}
+
+\definecolor{MyYellow}{rgb}{1.0, 1.0, 0.8}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+% \setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+
+
+\lstdefinestyle{mystyle}{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\^\^
+}
+
+\newtcblisting{mylisting}{
+      arc=0pt,
+      top=0mm,
+      bottom=0mm,
+      left=0mm,
+      right=0mm,
+      boxrule=0pt,
+      colback=MyYellow,
+      listing only,
+      listing options={style=mystyle}
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}[fragile]
+  \begin{center}Debian, Ubuntu, CentOS\end{center}
+  \begin{mylisting}
+    > curl https://get.docker.com | sudo sh
+    > sudo usermod -aG docker $USER
+    [log out / log in]
+  \end{mylisting}
+
+  \begin{center}Arch Linux\end{center}
+  \begin{mylisting}
+    > sudo pacman -S docker
+    > sudo usermod -aG docker $USER
+    [log out / log in]
+    [Start Docker service]
+  \end{mylisting}
+
+  \begin{center}macOS\end{center}
+  \begin{mylisting}
+    > brew cask install docker
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \begin{mylisting}
+> docker version
+
+Client:
+ Version:       18.02.0-ce
+ API version:   1.36
+ Go version:    go1.9.3
+ Git commit:    fc4de44
+ Built:         Wed Feb  7 21:16:24 2018
+ OS/Arch:       linux/amd64
+ Experimental:  false
+ Orchestrator:  swarm
+
+Server:
+ Engine:
+  Version:      18.02.0-ce
+  API version:  1.36 (minimum version 1.12)
+  Go version:   go1.9.3
+  Git commit:   fc4de44
+  Built:        Wed Feb  7 21:14:54 2018
+  OS/Arch:      linux/amd64
+  Experimental: false
+\end{mylisting}
+(If the \emph{Server} section is missing, you don't have permissions: add
+yourself to the \texttt{docker} group and log back in.)
+\end{frame}
+
+\begin{frame}
+  \big{Containers?}
+
+  \begin{itemize}
+    \item Build, package, and run an application in a \emph{segregated environment}
+    \item Namespaces provide own filesystem, process list, network stack, etc.
+    \item Cgroups to limit CPU, memory, etc.
+    \item More lightweight than VMs (e.g., VMWare)
+  \end{itemize}
+\end{frame}
+
+\begin{frame}
+  \big{Docker?}
+
+  \centering Containers made easy
+\end{frame}
+
+\begin{frame}
+  \centering\Huge{Using a container}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Running Alpine Linux}
+  \begin{mylisting}
+    > docker container run -i -t alpine:latest sh
+
+    / # echo Hello inside Docker
+    Hello inside Docker
+    / # touch FnF
+  \end{mylisting}
+  \begin{itemize}
+    \item \texttt{docker container run}: create a new container and run it;
+    \item \texttt{-i -t}: attach terminal to container;
+    \item \texttt{alpine:latest}: the image name; typically, \emph{app:version};
+    \item \texttt{sh}: inside the container, run a shell.
+  \end{itemize}
+  (The image is downloaded from \url{hub.docker.com})
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{List running containers}
+  \begin{mylisting}
+    > docker container ls
+
+CONTAINER ID        IMAGE               COMMAND
+879f1a834085        alpine:latest       "sh"
+
+CREATED              STATUS             NAMES
+About a minute ago   Up About a minute  zealous_kalam
+\end{mylisting}
+
+\begin{itemize}
+  \item \emph{Container Id} and \emph{Name} can be used to refer to container;
+  \item A custom name can be given with the \texttt{--name} option.
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{See processes running in a container}
+  \begin{mylisting}
+    > docker container top zealous_kalam
+
+UID                 PID            PPID           C
+root                23777          23764          0
+
+STIME               TTY            TIME           CMD
+21:41               pts/0          00:00:00       sh
+  \end{mylisting}
+  \begin{itemize}
+    \item PID, PPID: PIDs on the \emph{host} machine
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{View what happened in a container}
+  \begin{mylisting}
+    > docker container logs zealous_kalam
+
+    / # echo Hello inside Docker
+    Hello inside Docker
+    / # touch FnF
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Stop a container}
+  \begin{mylisting}
+    / # exit
+  \end{mylisting}
+  or
+  \begin{mylisting}
+    > docker container stop zealous_kalam
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{List all containers}
+  \begin{mylisting}
+> docker container ls -a
+
+CONTAINER ID    IMAGE            COMMAND   CREATED
+879f1a834085    alpine:latest    "sh"      13 minutes ago
+
+STATUS                                 NAMES
+Exited (137) About a minute ago        zealous_kalam
+
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Restart an existing container}
+  \begin{mylisting}
+> docker container start -ai zealous_kalam
+
+/ # ls
+FnF    dev    home   media  proc   run    srv    tmp    var
+bin    etc    lib    mnt    root   sbin   sys    usr
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Delete a container}
+  \begin{mylisting}
+    > docker container rm zealous_kalam
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Image vs. Container?}
+
+  Analogy with OO programming:
+  \begin{itemize}
+    \item Image $\approx$ class
+    \item Container $\approx$ instance
+  \end{itemize}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Image vs. Container?}
+  \begin{mylisting}
+> docker container run -d -p 1111:80 nginx:latest
+> docker container run -d -p 2222:80 nginx:latest
+^\pause^
+~$ docker container ls
+CONTAINER ID    IMAGE          ...    PORTS
+889f13f72315    nginx:latest   ...    0.0.0.0:2222->80/tcp
+000209eb0559    nginx:latest   ...    0.0.0.0:1111->80/tcp
+^\pause^
+> curl -s localhost:1111 | grep Welcome
+<title>Welcome to nginx!</title>
+<h1>Welcome to nginx!</h1>
+^\pause^
+> curl -s localhost:2222 | grep Welcome
+<title>Welcome to nginx!</title>
+<h1>Welcome to nginx!</h1>
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}
+  \big{Images}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{View local images}
+  \begin{mylisting}
+    > docker image ls
+REPOSITORY    TAG     ...  CREATED             SIZE
+nginx         latest  ...  6 days ago          109MB
+alpine        latest  ...  2 months ago        4.15MB
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Pull an image}
+
+  \begin{mylisting}
+    > docker image pull debian:9.3
+
+    > docker image ls
+REPOSITORY    TAG     ...   CREATED             SIZE
+nginx         latest  ...   6 days ago          109MB
+debian        9.3     ...   4 weeks ago         100MB
+alpine        latest  ...   2 months ago        4.15MB
+  \end{mylisting}
+
+  Download an image from DockerHub, but don't create a container.
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Remove an image}
+
+  \begin{mylisting}
+    > docker image rm debian:9.3
+Untagged: debian:9.3
+Untagged: debian@sha256:4fcd8c0b6f5e3bd44a16def331
+Deleted: sha256:1b3ec9d977fb413627aca6244b
+Deleted: sha256:8568818b1f7f534832b393c531
+
+    > docker image ls
+REPOSITORY    TAG     ...  CREATED             SIZE
+nginx         latest  ...  6 days ago          109MB
+alpine        latest  ...  2 months ago        4.15MB
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}
+  \big{Let's create our own image!}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{hello.py}
+  \begin{mylisting}
+    print("Hello, FnF!")
+  \end{mylisting}
+
+  \big{Dockerfile}
+  \begin{mylisting}
+    # Use python:3.6 as our base image
+    FROM python:3.6
+
+    # Copy `hello.py` (on host) to
+    # `/app/hello.py` (on container)
+    COPY hello.py /app/hello.py
+
+    # Invoke `hello.py` when launching container
+    ENTRYPOINT /usr/bin/python /app/hello.py
+  \end{mylisting}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{Build the image and run a container}
+
+  \begin{mylisting}
+> docker image build -t fnf:1 .
+Sending build context to Docker daemon  3.072kB
+<elided>
+Successfully built ef953d6e46fb
+Successfully tagged fnf:1
+
+> docker container run fnf:1
+Hello, FnF!
+  \end{mylisting}
+\end{frame}
+
+\end{document}
