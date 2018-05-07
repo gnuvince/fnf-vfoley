@@ -1,0 +1,73 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{ebgaramond}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{minted}
+\usepackage{graphicx}
+\usepackage{epstopdf}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  language=C,
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{Stack overflows}
+\end{frame}
+
+\begin{frame}
+  \big{Outline}
+  \begin{enumerate}
+    \item Find the secret lover;
+    \item Crash into the VIP club;
+    \item Summon a shell.
+  \end{enumerate}
+\end{frame}
+
+
+\begin{frame}[fragile]
+  \inputminted[fontsize=\footnotesize]{C}{code/fnf.c}
+\end{frame}
+
+
+\begin{frame}
+  \big{Review}
+  \begin{enumerate}
+    \item Find the secret lover
+    \begin{itemize}
+      \item[] Overwrite a local variable;
+    \end{itemize}
+    \item Crash into the VIP club
+    \begin{itemize}
+      \item[] Modify the return address;
+    \end{itemize}
+    \item Summon a shell
+    \begin{itemize}
+      \item[] Inject and execute code.
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\end{document}
