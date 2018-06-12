@@ -1,0 +1,37 @@
+#!/usr/bin/env python
+
+import numpy as np
+import os
+import sys
+
+PROGNAME = os.path.basename(sys.argv[0])
+
+def print_stat(name, value):
+    print("{0:8}: {1:.4}".format(name, value))
+
+def compute_stats(filename):
+    with open(filename) as f:
+        numbers = []
+        for line in f:
+            try:
+                numbers.append(float(line))
+            except ValueError:
+                print("{0}: not a number: '{1}'".format(
+                    PROGNAME, line.strip()
+                ))
+        a = np.array(numbers)
+        print_stat("sum", np.sum(a))
+        print_stat("min", np.min(a))
+        print_stat("max", np.max(a))
+        print_stat("median", np.percentile(a, 50))
+        print_stat("mean", np.mean(a))
+        print_stat("std", np.std(a))
+        print_stat("p75", np.percentile(a, 75))
+        print_stat("p90", np.percentile(a, 90))
+        print_stat("p95", np.percentile(a, 95))
+        print_stat("p99", np.percentile(a, 99))
+
+if len(sys.argv) != 2:
+    print("usage: {0} FILE".format(PROGNAME))
+else:
+    compute_stats(sys.argv[1])
