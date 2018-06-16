@@ -31,8 +31,5 @@ def compute_stats(filename):
         print_stat("p95", np.percentile(a, 95))
         print_stat("p99", np.percentile(a, 99))
 
-if len(sys.argv) != 2:
-    print("usage: {0} FILE".format(PROGNAME))
-    sys.exit(1)
-else:
-    compute_stats(sys.argv[1])
+for filename in sys.argv[1:]:
+    compute_stats(filename)
