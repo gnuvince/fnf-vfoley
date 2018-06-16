@@ -33,5 +33,6 @@ def compute_stats(filename):
 
 if len(sys.argv) != 2:
     print("usage: {0} FILE".format(PROGNAME))
+    sys.exit(1)
 else:
     compute_stats(sys.argv[1])
