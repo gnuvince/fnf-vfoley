@@ -16,7 +16,7 @@ def compute_stats(filename):
             try:
                 numbers.append(float(line))
             except ValueError:
-                print("{0}: not a number: '{1}'".format(
+                sys.stderr.write("{0}: not a number: '{1}'\n".format(
                     PROGNAME, line.strip()
                 ))
         a = np.array(numbers)
