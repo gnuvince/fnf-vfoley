@@ -34,5 +34,8 @@ if len(sys.argv) == 1:
     compute_stats(sys.stdin)
 else:
     for filename in sys.argv[1:]:
-        with open(filename) as f:
-            compute_stats(f)
+        if filename == "-":
+            compute_stats(sys.stdin)
+        else:
+            with open(filename) as f:
+                compute_stats(f)
