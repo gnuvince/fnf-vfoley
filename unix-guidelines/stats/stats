@@ -3,13 +3,14 @@
 import numpy as np
 import os
 import sys
+import getopt
 
 PROGNAME = os.path.basename(sys.argv[0])
 
 def print_stat(name, value):
     print("{0:8}: {1:.4}".format(name, value))
 
-def compute_stats(handle):
+def compute_stats_human(handle):
     numbers = []
     for line in handle:
         try:
@@ -30,10 +31,42 @@ def compute_stats(handle):
     print_stat("p95", np.percentile(a, 95))
     print_stat("p99", np.percentile(a, 99))
 
-if len(sys.argv) == 1:
+def compute_stats_single(handle):
+    numbers = []
+    for line in handle:
+        try:
+            numbers.append(float(line))
+        except ValueError:
+            sys.stderr.write("{0}: not a number: '{1}'\n".format(
+                PROGNAME, line.strip()
+            ))
+    a = np.array(numbers)
+    print("{} {} {} {} {} {} {} {} {} {}".format(
+        np.sum(a),
+        np.min(a),
+        np.max(a),
+        np.percentile(a, 50),
+        np.mean(a),
+        np.std(a),
+        np.percentile(a, 75),
+        np.percentile(a, 90),
+        np.percentile(a, 95),
+        np.percentile(a, 99)
+    ))
+
+(opts, args) = getopt.getopt(sys.argv[1:], "s")
+opts = dict(opts)
+
+if "-s" in opts:
+    compute_stats = compute_stats_single
+else:
+    compute_stats = compute_stats_human
+
+
+if len(args) == 0:
     compute_stats(sys.stdin)
 else:
-    for filename in sys.argv[1:]:
+    for filename in args:
         if filename == "-":
             compute_stats(sys.stdin)
         else:
