@@ -77,8 +77,8 @@ class RemiDFA {
     }
 
     String acceptString() {
-        if (finished() && curr_state == 5) return "YES";
-        if (finished() && curr_state != 5) return "NO";
+        if (finished() && curr_state == 5) return "“YES”";
+        if (finished() && curr_state != 5) return "“NO”";
         return "";
     }
 }
@@ -106,10 +106,12 @@ void draw_head(int i, String text) {
     fill(255);
     textAlign(CENTER, CENTER);
     text(text, x, y);
+    textAlign(LEFT, CENTER);
+    text(dfa.acceptString(), x + sq_size/2, y);
 }
 
 
-PFont iosevka;
+PFont myFont;
 int text_size = 64;
 int sq_size = 96;
 RemiDFA dfa;
@@ -122,18 +124,18 @@ void setup() {
     size(1600, 1000);
 
     // Font
-    iosevka = createFont("Iosevka Term", text_size);
-    textFont(iosevka);
+    myFont = createFont("Iosevka Term", text_size);
+    textFont(myFont);
 
-    dfa = new RemiDFA("remise");
+    dfa = new RemiDFA("remmmmi");
     nodes = new Node[6];
     int node_h = 3 * node_w;
-    nodes[0] = new Node("Error\n0", (int) (node_w + node_w*3.0), 3*node_w, node_w);
-    nodes[1] = new Node("Start\n1", node_w, node_w, node_w);
-    nodes[2] = new Node("SawR\n2", (int) (node_w + node_w*1.5), node_w, node_w);
-    nodes[3] = new Node("SawRE\n3", (int) (node_w + node_w*3.0), node_w, node_w);
-    nodes[4] = new Node("SawREM\n4", (int) (node_w + node_w*4.5), node_w, node_w);
-    nodes[5] = new Node("Success\n5\n✓", (int) (node_w + node_w*6.0), node_w, node_w);
+    nodes[0] = new Node("Error\n(0)", (int) (node_w + node_w*3.0), 3*node_w, node_w);
+    nodes[1] = new Node("Start\n(1)", node_w, node_w, node_w);
+    nodes[2] = new Node("SawR\n(2)", (int) (node_w + node_w*1.5), node_w, node_w);
+    nodes[3] = new Node("SawRE\n(3)", (int) (node_w + node_w*3.0), node_w, node_w);
+    nodes[4] = new Node("SawREM\n(4)", (int) (node_w + node_w*4.5), node_w, node_w);
+    nodes[5] = new Node("Success\n(5)\n✓", (int) (node_w + node_w*6.0), node_w, node_w);
 }
 
 void draw_edge(Node left, Node right, String label) {
@@ -186,13 +188,6 @@ void draw() {
     textSize(32);
     textAlign(CENTER, TOP);
     text("*", nodes[0].x, nodes[0].y + nodes[0].diam + 8);
-
-    rect(width-400, height/2, 300, 120);
-    textAlign(LEFT, BOTTOM);
-    text("Accept?", width-400, height/2);
-    textSize(108);
-    textAlign(LEFT, CENTER);
-    text(dfa.acceptString(), width-400 + 32, height/2 + 50);
 }
 
 
