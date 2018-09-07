@@ -101,13 +101,15 @@ void draw_tape(String s) {
 void draw_head(int i, String text) {
     fill(dfa.head_color());
     int x = sq_size/2 + (1+i) * sq_size;
-    int y = 3*height/4 + sq_size + 8;
-    ellipse(x, y, sq_size, sq_size);
+    int y = 3*height/4 + sq_size/2 + 8;
+
+    triangle(x, y, x-sq_size/2, y+sq_size, x+sq_size/2, y+sq_size);
+
     fill(255);
     textAlign(CENTER, CENTER);
-    text(text, x, y);
+    text(text, x, y + sq_size/2 + 8);
     textAlign(LEFT, CENTER);
-    text(dfa.acceptString(), x + sq_size/2, y);
+    text(dfa.acceptString(), x + sq_size/2, y + sq_size/2 + 8);
 }
 
 
@@ -127,7 +129,7 @@ void setup() {
     myFont = createFont("Iosevka Term", text_size);
     textFont(myFont);
 
-    dfa = new RemiDFA("remmmmi");
+    dfa = new RemiDFA(args[0]);
     nodes = new Node[6];
     int node_h = 3 * node_w;
     nodes[0] = new Node("Error\n(0)", (int) (node_w + node_w*3.0), 3*node_w, node_w);
@@ -152,6 +154,7 @@ void draw_edge(Node left, Node right, String label) {
 
 void draw() {
     background(0);
+
     dfa.draw();
     for (int i = 0; i < nodes.length; ++i) {
         nodes[i].active = (i == dfa.curr_state);
