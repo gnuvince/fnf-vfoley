@@ -1,0 +1,9 @@
+[package]
+name = "sort"
+version = "0.1.0"
+authors = ["Vincent Foley <vfoley@gmail.com>"]
+edition = "2018"
+
+[dependencies]
+clap = "2.32"
+rand = "0.6"
