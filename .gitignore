@@ -9,7 +9,7 @@
 *.fdb_latexmk
 *.fls
 *.listing
-cache/sort/target
+**/target
 /cache/sum-matrix/sum-matrix-c
 /cache/sum-matrix/sum-matrix-rs
 /cache/sum-matrix/sum-matrix-go
