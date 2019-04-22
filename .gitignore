@@ -10,3 +10,7 @@
 *.fls
 *.listing
 cache/sort/target
+/cache/sum-matrix/sum-matrix-c
+/cache/sum-matrix/sum-matrix-rs
+/cache/sum-matrix/sum-matrix-go
+*.class
