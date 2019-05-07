@@ -6,7 +6,8 @@
 #include <stdlib.h>
 #include <sys/time.h>
 
-#define N 4096
+static size_t ROWS = 1<<12;
+static size_t COLS = 1<<12;
 
 /* Get current time in micro-seconds */
 int64_t timestamp(void) {
@@ -21,11 +22,12 @@ double *init_matrix(void) {
     int64_t t1, t2;
 
     t1 = timestamp();
-    double *m = calloc(N*N, sizeof(double));
+    fprintf(stderr, "allocating %" PRIu64 " x %" PRIu64 " matrix\n", ROWS, COLS);
+    double *m = calloc(ROWS*COLS, sizeof(double));
     if (m == NULL)
         err(1, "calloc");
 
-    for (size_t i = 0; i < N*N; ++i)
+    for (size_t i = 0; i < ROWS*COLS; ++i)
         m[i] = (double) (i % 2);
 
     t2 = timestamp();
@@ -39,9 +41,9 @@ void sum_by_row(double *m) {
     int64_t t1, t2;
 
     t1 = timestamp();
-    for (size_t row = 0; row < N; ++row) {
-        for (size_t col = 0; col < N; ++col) {
-            sum += *(m + (row * N) + col);
+    for (size_t row = 0; row < ROWS; ++row) {
+        for (size_t col = 0; col < COLS; ++col) {
+            sum += m[(row * COLS) + col];
         }
     }
     t2 = timestamp();
@@ -53,9 +55,9 @@ void sum_by_col(double *m) {
     int64_t t1, t2;
 
     t1 = timestamp();
-    for (size_t row = 0; row < N; ++row) {
-        for (size_t col = 0; col < N; ++col) {
-            sum += *(m + row + (col * N));
+    for (size_t row = 0; row < ROWS; ++row) {
+        for (size_t col = 0; col < COLS; ++col) {
+            sum += m[row + (col * ROWS)];
         }
     }
     t2 = timestamp();
@@ -64,18 +66,36 @@ void sum_by_col(double *m) {
 
 int main(int argc, char **argv) {
     int opt;
-    double *m = init_matrix();
 
-    while ((opt = getopt(argc, argv, "rc")) != -1) {
+    while ((opt = getopt(argc, argv, "r:c:")) != -1) {
         switch (opt) {
         case 'r':
-            sum_by_row(m);
+            ROWS = 1 << atoi(optarg);
             break;
         case 'c':
-            sum_by_col(m);
+            COLS = 1 << atoi(optarg);
             break;
         }
     }
+
+    fprintf(stderr, "ROWS=%" PRIu64 " COLS=%" PRIu64 "\n", ROWS, COLS);
+    double *m = init_matrix();
+
+    for (int i = optind; i < argc; ++i) {
+        char *arg = argv[i];
+        while (*arg != 0) {
+            switch (*arg) {
+            case 'c':
+                sum_by_col(m);
+                break;
+            case 'r':
+                sum_by_row(m);
+                break;
+            }
+            arg++;
+        }
+    }
+
     free(m);
     return 0;
 }
