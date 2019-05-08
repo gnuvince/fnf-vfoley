@@ -1,20 +1,23 @@
+/* For clock_gettime(2) */
+#define _POSIX_C_SOURCE 199309L
+
 #include <err.h>
 #include <getopt.h>
 #include <inttypes.h>
 #include <stdint.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <sys/time.h>
+#include <time.h>
 
 static size_t ROWS = 1<<12;
 static size_t COLS = 1<<12;
 
 /* Get current time in micro-seconds */
 int64_t timestamp(void) {
-    struct timeval tv;
-    if (gettimeofday(&tv, NULL) != 0)
-        err(1, "gettimeofday");
-    return tv.tv_sec * 1000000 + tv.tv_usec;
+    struct timespec tv;
+    if (clock_gettime(CLOCK_MONOTONIC, &tv) != 0)
+        err(1, "clock_monotonic");
+    return (tv.tv_sec * 1000000000 + tv.tv_nsec) / 1000.0;
 }
 
 /* Initialize an NxN matrix. */
