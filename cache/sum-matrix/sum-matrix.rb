@@ -32,11 +32,13 @@ end
 t2 = Time.now
 puts "init_matrix: #{1e6*(t2-t1)} micro-seconds"
 
-for c in ARGV[0].each_char do
-  case c
-  when 'r'
-    sum_by_row(m)
-  when 'c'
-    sum_by_col(m)
+for arg in ARGV do
+  for c in arg.each_char do
+    case c
+    when 'r'
+      sum_by_row(m)
+    when 'c'
+      sum_by_col(m)
+    end
   end
 end
