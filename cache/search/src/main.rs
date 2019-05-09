@@ -1,13 +1,14 @@
 use std::time::{Instant};
 
 const ITERS: usize = 5000;
-const SIZE: i32 = 255;
+type Element = u64;
+const SIZE: Element = 255;
 
-fn linear_search(arr: &[i32], target: i32) -> bool {
+fn linear_search(arr: &[Element], target: Element) -> bool {
     arr.iter().any(|x| *x == target)
 }
 
-fn binary_search(arr: &[i32], target: i32) -> bool {
+fn binary_search(arr: &[Element], target: Element) -> bool {
     let mut lo = 0;
     let mut hi = arr.len();
 
@@ -28,7 +29,7 @@ fn binary_search(arr: &[i32], target: i32) -> bool {
 
 fn main() {
     for size in 0 ..= SIZE {
-        let v: Vec<i32> = (0 ..= (size as i32)).collect();
+        let v: Vec<Element> = (0 ..= (size as Element)).collect();
 
         let top = Instant::now();
         let mut linear_matches = 0;

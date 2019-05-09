@@ -1,31 +1,56 @@
+use rand::prelude::*;
 use std::time::Instant;
+use std::env::args;
 
-const N: usize = 1<<23;
+type Element = i64;
+const N: Element = 1<<15;
+
+fn check_sorted(xs: &[Element]) {
+    for (a, b) in xs.iter().zip(xs[1..].iter()) {
+        assert!(a <= b);
+    }
+}
+
+fn bubble_sort(xs: &mut [Element]) {
+    for i in 0 .. xs.len() {
+        for j in i+1 .. xs.len() {
+            if xs[i] > xs[j] {
+                xs.swap(i, j);
+            }
+        }
+    }
+}
+
+fn selection_sort(xs: &mut [Element]) {
+    for i in 0 .. xs.len() {
+        for j in i+1 .. xs.len() {
+            if xs[j] < xs[i] {
+                xs.swap(i, j);
+            }
+        }
+    }
+}
+
+fn run_sort(name: &str, sort_fn: fn(&mut [Element]), v: &mut [Element]) {
+    let top = Instant::now();
+    sort_fn(v);
+    let sort_time = top.elapsed();
+    check_sorted(&v);
+    println!("{} {}.{:06}", name, sort_time.as_secs(), sort_time.subsec_micros());
+
+}
 
 fn main() {
-    let mut u: Vec<i64> = vec![0; N];
-    let mut v: Vec<i64> = vec![0; N];
-
-    for bits in 16 ..= 23 {
-        let n = 1 << bits;
-        for (x, y) in &mut v[..n].iter_mut().zip(&mut u) {
-            let r = rand::random::<i64>();
-            *x = r;
-            *y = r;
+    let mut v: Vec<Element> = (0 .. N).collect();
+    let mut rng = rand::thread_rng();
+    for arg in args().skip(1) {
+        for b in arg.bytes() {
+            v.shuffle(&mut rng);
+            match b {
+                b'b' => run_sort("bubble_sort", bubble_sort, &mut v),
+                b's' => run_sort("selection_sort", selection_sort, &mut v),
+                _ => ()
+            }
         }
-
-        let top = Instant::now();
-        &mut u[..n].sort();
-        let merge_sort_time = top.elapsed();
-
-        let top = Instant::now();
-        &mut v[..n].sort_unstable();
-        let quick_sort_time = top.elapsed();
-
-        println!("{} {}.{:06} {}.{:06} {:.02}",
-                 n,
-                 merge_sort_time.as_secs(), merge_sort_time.subsec_micros(),
-                 quick_sort_time.as_secs(), quick_sort_time.subsec_micros(),
-                 (merge_sort_time.as_micros() as f64 / quick_sort_time.as_micros() as f64));
     }
 }
