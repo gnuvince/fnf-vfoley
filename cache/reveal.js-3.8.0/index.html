@@ -1,0 +1,109 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>reveal.js</title>
+
+		<link rel="stylesheet" href="css/reset.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/white.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/monokai.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+
+        <style>
+         h1, h2, h3, pre, section {
+             font-family: Iosevka  !important;
+         }
+        </style>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+                <section>
+                    <h1>Using the cache for better performance</h1>
+                </section>
+
+				<section>
+                    <h3>The Problem</h3>
+                    <img src="http://gameprogrammingpatterns.com/images/data-locality-chart.png" />
+                </section>
+
+                <section>
+                    <h3>The Problem</h3>
+                    <ul>
+                        <li>The CPU executes instructions very fast</li>
+                        <li>The data arrives to the CPU very slowly</li>
+                    </ul>
+                </section>
+
+                <section>
+                    <h3>The Observation</h3>
+                    “When a byte is read, it's likely that a byte near it will be read next.”
+                </section>
+
+                <section>
+                    <h3>The Solution</h3>
+                    <ol>
+                        <li>Read “chunks” of memory at once</li>
+                        <li>Store chunks in smaller, faster memories</li>
+                        <li>Try to read from the faster memories first</li>
+                    </ol>
+                </section>
+
+                <section>
+                    <pre>
+L1 cache reference                    0.5 ns
+L2 cache reference                    7   ns    14x L1
+Main memory reference               100   ns    20x L2, 200x L1
+Disk seek                    10,000,000   ns
+                    </pre>
+
+                    <small>Source: https://gist.github.com/jboner/2841832</small>
+                </section>
+
+                <section>
+                    <h2>Example #1</h2>
+                    <h3>Summing the elements of a matrix</h3>
+                </section>
+
+                <section>
+                    <h2>Example #2</h2>
+                    <h3>Summing the elements of an array vs. a linked list</h3>
+                </section>
+
+                <section>
+                    <h2>Example #3</h2>
+                    <h3>Flashing the lights in a huge manor</h3>
+                </section>
+			</div>
+		</div>
+
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info about config & dependencies:
+			// - https://github.com/hakimel/reveal.js#configuration
+			// - https://github.com/hakimel/reveal.js#dependencies
+			Reveal.initialize({
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true }
+				]
+			});
+		</script>
+	</body>
+</html>
