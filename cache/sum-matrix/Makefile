@@ -1,4 +1,4 @@
-OUTPUT_PROGRAMS = SumMatrix.class sum-matrix-c sum-matrix-rs sum-matrix-go
+OUTPUT_PROGRAMS = SumMatrix.class SumMatrixSlow.class sum-matrix-c sum-matrix-rs sum-matrix-go
 
 all: ${OUTPUT_PROGRAMS}
 
@@ -6,6 +6,9 @@ clean:
 	rm -f ${OUTPUT_PROGRAMS}
 
 SumMatrix.class: SumMatrix.java
+	javac $<
+
+SumMatrixSlow.class: SumMatrixSlow.java
 	javac $<
 
 sum-matrix-c: sum-matrix.c
