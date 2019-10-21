@@ -1,0 +1,71 @@
+\documentclass{beamer}
+
+\usefonttheme{serif}
+\usepackage{charter}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+\usepackage{listings}
+\usepackage{graphicx}
+ \usepackage{epstopdf}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamertemplate{footline}[frame number]{}
+%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+\lstset{
+  stepnumber=1,
+  breaklines=true,
+  basicstyle=\ttfamily\scriptsize,
+  numberstyle=\tiny,
+  commentstyle=\color{gray},
+  showstringspaces=false,
+  keepspaces=true,
+  escapeinside=\#\#
+}
+
+\renewcommand\big[1]{
+  \begin{center}
+    \Large{#1}
+  \end{center}
+}
+
+\begin{document}
+
+\begin{frame}
+  \centering\Huge{GNU Parallel}
+\end{frame}
+
+\begin{frame}[fragile]
+    \big{The Extortion Scheme}
+\tiny
+\begin{verbatim}
+~ :) parallel --citation
+Academic tradition requires you to cite works you base your article on.
+When using programs that use GNU Parallel to process data for publication
+please cite:
+
+@article{Tange2011a,
+  title = {GNU Parallel - The Command-Line Power Tool},
+  author = {O. Tange},
+  address = {Frederiksberg, Denmark},
+  journal = {;login: The USENIX Magazine},
+  month = {Feb},
+  number = {1},
+  volume = {36},
+  url = {http://www.gnu.org/s/parallel},
+  year = {2011},
+  pages = {42-47},
+  doi = {http://dx.doi.org/10.5281/zenodo.16303}
+}
+
+(Feel free to use \nocite{Tange2011a})
+
+This helps funding further development; AND IT WON'T COST YOU A CENT.
+If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
+
+If you send a copy of your published article to tange@gnu.org, it will be
+mentioned in the release notes of next version of GNU Parallel.
+\end{verbatim}
+\end{frame}
+
+\end{document}
