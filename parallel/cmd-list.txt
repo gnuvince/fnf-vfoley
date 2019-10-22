@@ -1,3 +1,0 @@
-cat a.txt
-rot13 <b.txt
-sha1sum c.txt
