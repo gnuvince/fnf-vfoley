@@ -7,11 +7,11 @@
 \usepackage[english]{babel}
 \usepackage{listings}
 \usepackage{graphicx}
- \usepackage{epstopdf}
+\usepackage{epstopdf}
 
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]{}
-%\setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
+% \setbeamertemplate{footline}{\hfill\insertframenumber~\vrule~\inserttotalframenumber}
 \lstset{
   stepnumber=1,
   breaklines=true,
@@ -36,8 +36,8 @@
 \end{frame}
 
 \begin{frame}[fragile]
-    \big{The Extortion Scheme}
-\tiny
+  \big{The Extortion Scheme}
+  \tiny
 \begin{verbatim}
 ~ :) parallel --citation
 Academic tradition requires you to cite works you base your article on.
@@ -69,7 +69,7 @@ mentioned in the release notes of next version of GNU Parallel.
 \end{frame}
 
 \begin{frame}[fragile]
-\big{``Shut up, parallel!''}
+  \big{``Shut up, parallel!''}
 \begin{verbatim}
 ~ :) parallel --citation
 
@@ -84,17 +84,17 @@ The citation notice is now silenced.
 \end{frame}
 
 \begin{frame}
-\big{The mental model}
+  \big{The mental model}
 
-Use \texttt{parallel}'s template language and operators to build a list of commands to run.
+  Use \texttt{parallel}'s template language and operators to build a list of commands to run.
 \end{frame}
 
 \begin{frame}[fragile]
-\big{::: and \{\}}
-\begin{description}
+  \big{::: and \{\}}
+  \begin{description}
     \item[:::] Pass command-line args to template.
     \item[\{\}] Replace with each item in the list.
-\end{description}
+  \end{description}
 
 \begin{verbatim}
 ~ :) parallel {} ::: date uname 'uptime -s'
@@ -110,8 +110,8 @@ Linux
 \end{frame}
 
 \begin{frame}[fragile]
-\big{Mulitple invocations of :::}
-Creates a permutation of the elements
+  \big{Mulitple invocations of :::}
+  Creates a permutation of the elements
 \begin{verbatim}
 ~ :) parallel 'echo {}' ::: a b ::: 1 2 ::: x y
 a 1 x
@@ -126,8 +126,8 @@ b 2 y
 \end{frame}
 
 \begin{frame}[fragile]
-\big{:::+}
-Similar to ::: but works pair-wise
+  \big{:::+}
+  Similar to ::: but works pair-wise
 \begin{verbatim}
 ~ :) parallel 'echo {}' ::: a b :::+ 1 2 :::+ x y
 a 1 x
@@ -136,8 +136,8 @@ b 2 y
 \end{frame}
 
 \begin{frame}[fragile]
-\big{::: and :::+}
-The operators ::: and :::+ can be mixed and matched
+  \big{::: and :::+}
+  The operators ::: and :::+ can be mixed and matched
 \begin{verbatim}
 ~ :) parallel 'echo {}' ::: a b ::: 1 2 :::+ x y
 a 1 x
@@ -148,14 +148,39 @@ b 2 y
 \end{frame}
 
 \begin{frame}[fragile]
-\big{Positional placeholders}
-The placeholder \texttt{\{n\}} can be used to select the nth element in the list item.
+  \big{Positional placeholders}
+  The placeholder \texttt{\{n\}} can be used to select the nth element in the list item.
 \begin{verbatim}
 ~ :) parallel 'echo {3} {1}' ::: a b ::: 1 2 :::+ x y
 x a
 y a
 x b
 y b
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{:::: and ::::+}
+  Similar to ::: and :::+, but they take their arguments from files.
+\begin{verbatim}
+~ :) cat digits.txt
+1
+2
+3
+~ :) parallel 'echo {}' :::: digits.txt
+1
+2
+3
+\end{verbatim}
+\end{frame}
+
+\begin{frame}[fragile]
+  \big{stdin can be used as a file}
+\begin{verbatim}
+~ :) seq 1 3 | parallel 'echo {}' :::: -
+1
+2
+3
 \end{verbatim}
 \end{frame}
 
