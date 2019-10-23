@@ -35,36 +35,45 @@
   \centering\Huge{GNU Parallel}
 \end{frame}
 
+\begin{frame}
+  \big{This is fucking pathetic}
+  \includegraphics[scale=0.25]{pathetic.png}
+\end{frame}
+
+\begin{frame}
+  \big{This is fucking awesome}
+  \includegraphics[scale=0.25]{awesome.png}
+\end{frame}
+
+\begin{frame}
+  \big{Parallel can transform pathetic into awesome\ldots}
+  \pause
+  \big{But it sucks.}
+  \pause
+  \begin{itemize}
+    \item \textbf{Its user interface is weird}
+    \item It pesters you for credit and money
+    \item It can make some jobs \emph{slower}
+    \item It's written in Perl
+  \end{itemize}
+\end{frame}
+
 \begin{frame}[fragile]
   \big{The Extortion Scheme}
   \tiny
 \begin{verbatim}
-~ :) parallel --citation
+~ :) parallel echo ::: 1 2 3
 Academic tradition requires you to cite works you base your article on.
 When using programs that use GNU Parallel to process data for publication
 please cite:
 
-@article{Tange2011a,
-  title = {GNU Parallel - The Command-Line Power Tool},
-  author = {O. Tange},
-  address = {Frederiksberg, Denmark},
-  journal = {;login: The USENIX Magazine},
-  month = {Feb},
-  number = {1},
-  volume = {36},
-  url = {http://www.gnu.org/s/parallel},
-  year = {2011},
-  pages = {42-47},
-  doi = {http://dx.doi.org/10.5281/zenodo.16303}
-}
-
-(Feel free to use \nocite{Tange2011a})
+  O. Tange (2011): GNU Parallel - The Command-Line Power Tool,
+  ;login: The USENIX Magazine, February 2011:42-47.
 
 This helps funding further development; AND IT WON'T COST YOU A CENT.
 If you pay 10000 EUR you should feel free to use GNU Parallel without citing.
 
-If you send a copy of your published article to tange@gnu.org, it will be
-mentioned in the release notes of next version of GNU Parallel.
+To silence this citation notice: run 'parallel --citation'.
 \end{verbatim}
 \end{frame}
 
@@ -103,9 +112,9 @@ Linux
 2019-09-30 13:06:13
 
 ~ :) parallel 'du -h {}' ::: *.txt
-4.0K	chars.txt
-4.0K	demenage.txt
-16K	UTF-8-demo.txt
+4.0K  chars.txt
+4.0K  demenage.txt
+16K   UTF-8-demo.txt
 \end{verbatim}
 \end{frame}
 
@@ -151,11 +160,11 @@ b 2 y
   \big{Positional placeholders}
   The placeholder \texttt{\{n\}} can be used to select the nth element in the list item.
 \begin{verbatim}
-~ :) parallel 'echo {3} {1}' ::: a b ::: 1 2 :::+ x y
-x a
-y a
-x b
-y b
+~ :) parallel 'echo {3} {1} {3}' ::: a b ::: 1 2 :::+ x y
+x a x
+y a y
+x b x
+y b y
 \end{verbatim}
 \end{frame}
 
@@ -178,6 +187,11 @@ y b
   \big{stdin can be used as a file}
 \begin{verbatim}
 ~ :) seq 1 3 | parallel 'echo {}' :::: -
+1
+2
+3
+
+~ :) seq 1 3 | parallel 'echo {}'
 1
 2
 3
