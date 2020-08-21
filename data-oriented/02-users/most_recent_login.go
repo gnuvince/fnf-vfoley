@@ -2,12 +2,19 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"fmt"
 	"os"
 	"strconv"
 	"strings"
 	"time"
 )
+
+func pressEnterToContinue() {
+	// reader := bufio.NewReader(os.Stdin)
+	// fmt.Println("Press <Enter> to continue...")
+	// reader.ReadString('\n')
+}
 
 func loadCsv(filename string) ([][]string, error) {
 	file, err := os.Open("users.csv")
@@ -29,18 +36,18 @@ func loadCsv(filename string) ([][]string, error) {
 	return rows, nil
 }
 
-func aos() {
+func aos(filename string) {
 	type User = struct {
-		id         uint32
+		id         int64
 		username   string
 		homedir    string
 		shell      string
-		last_login uint32
+		last_login int64
 	}
 
-	rows, err := loadCsv("users.csv")
+	rows, err := loadCsv(filename)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "cannot open users.csv: %s\n", err)
+		fmt.Fprintf(os.Stderr, "cannot open %s: %s\n", filename, err)
 		return
 	}
 
@@ -58,17 +65,19 @@ func aos() {
 		}
 
 		user := User{
-			id:         uint32(id),
+			id:         int64(id),
 			username:   fields[1],
 			homedir:    fields[2],
 			shell:      fields[3],
-			last_login: uint32(last_login),
+			last_login: int64(last_login),
 		}
 		users = append(users, user)
 	}
 
+	pressEnterToContinue()
+
 	start := time.Now()
-	latest_timestamp := uint32(0)
+	latest_timestamp := int64(0)
 	latest_username := ""
 	for _, user := range users {
 		if user.last_login > latest_timestamp {
@@ -81,21 +90,21 @@ func aos() {
 		latest_timestamp, latest_username, end.Sub(start))
 }
 
-func hotCold() {
+func hotCold(filename string) {
 	type UserInfo = struct {
-		id       uint32
+		id       int64
 		username string
 		homedir  string
 		shell    string
 	}
 	type User = struct {
 		info       *UserInfo
-		last_login uint32
+		last_login int64
 	}
 
-	rows, err := loadCsv("users.csv")
+	rows, err := loadCsv(filename)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "cannot open users.csv: %s\n", err)
+		fmt.Fprintf(os.Stderr, "cannot open %s: %s\n", filename, err)
 		return
 	}
 
@@ -114,18 +123,20 @@ func hotCold() {
 
 		var user User
 		var info UserInfo
-		info.id = uint32(id)
+		info.id = int64(id)
 		info.username = fields[1]
 		info.homedir = fields[2]
 		info.shell = fields[3]
 		user.info = &info
-		user.last_login = uint32(last_login)
+		user.last_login = int64(last_login)
 
 		users = append(users, user)
 	}
 
+	pressEnterToContinue()
+
 	start := time.Now()
-	latest_timestamp := uint32(0)
+	latest_timestamp := int64(0)
 	latest_username := ""
 	for _, user := range users {
 		if user.last_login > latest_timestamp {
@@ -138,18 +149,18 @@ func hotCold() {
 		latest_timestamp, latest_username, end.Sub(start))
 }
 
-func soa() {
+func soa(filename string) {
 	type Users = struct {
-		id         []uint32
+		id         []int64
 		username   []string
 		homedir    []string
 		shell      []string
-		last_login []uint32
+		last_login []int64
 	}
 
-	rows, err := loadCsv("users.csv")
+	rows, err := loadCsv(filename)
 	if err != nil {
-		fmt.Fprintf(os.Stderr, "cannot open users.csv: %s\n", err)
+		fmt.Fprintf(os.Stderr, "cannot open %s: %s\n", filename, err)
 		return
 	}
 
@@ -166,15 +177,17 @@ func soa() {
 			continue
 		}
 
-		users.id = append(users.id, uint32(id))
+		users.id = append(users.id, int64(id))
 		users.username = append(users.username, fields[1])
 		users.homedir = append(users.homedir, fields[2])
 		users.shell = append(users.shell, fields[3])
-		users.last_login = append(users.last_login, uint32(last_login))
+		users.last_login = append(users.last_login, int64(last_login))
 	}
 
+	pressEnterToContinue()
+
 	start := time.Now()
-	latest_timestamp := uint32(0)
+	latest_timestamp := int64(0)
 	latest_entity := 0
 	for i, last_login := range users.last_login {
 		if last_login > latest_timestamp {
@@ -185,10 +198,23 @@ func soa() {
 	end := time.Now()
 	fmt.Printf("last_login: %d; user: %s; time: %+v\n",
 		latest_timestamp, users.username[latest_entity], end.Sub(start))
+
 }
 
 func main() {
-	aos()
-	hotCold()
-	soa()
+	var flagAos = flag.Bool("aos", false, "do AOS run")
+	var flagHotCold = flag.Bool("hotcold", false, "do hot/cold run")
+	var flagSoa = flag.Bool("soa", false, "do SOA run")
+	var filename = flag.String("filename", "users.csv", "name of the file")
+	flag.Parse()
+
+	if (*flagAos) {
+		aos(*filename)
+	}
+	if (*flagHotCold) {
+		hotCold(*filename)
+	}
+	if (*flagSoa) {
+		soa(*filename)
+	}
 }
